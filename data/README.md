@@ -29,3 +29,6 @@ The codebook for your data file(s) using the following format.
 |Dem_isolation| Level of isolation
 |Dem_isolation_adults| Level of isolation for adults 
 |Dem_isolation_kids| Level of isolation for kids 
+|AD_gain & AD_loss| Choice in 1981 "Asian Disease Scenario" Conditions 
+|AD_check| 
+
