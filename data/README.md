@@ -31,9 +31,4 @@ The codebook for your data file(s) using the following format.
 |AD_check| 
 |Scale_PSS10_UCLA_1	- Scale_PSS10_UCLA_10| UCLA Loneliness Scale 
 
-'''
-{r COVID-data}
-  glimpse()
-'''
-
 
