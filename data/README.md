@@ -10,7 +10,7 @@ The codebook for your data file(s) using the following format.
 
 |variable         |description |
 |:----------------|:-----------|
-|variable1        | Description of variable 1 |
-|variable2        | Description of variable 2 |
-|variable3        | Description of variable 3 |
+|ID        | Subject ID |
+|answered_all    | Answered all questions |
+|Duration..in seconds       | The time it took for participants to complete the survey.|
 |...              | ... |
