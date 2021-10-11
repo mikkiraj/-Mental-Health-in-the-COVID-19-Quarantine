@@ -6,7 +6,7 @@ Then, include metadata about your dataset including information on provenance, c
 
 The codebook for your data file(s) using the following format.
 
-## name of data file
+## COVIDiSTRESS_May 30_First 
 
 |variable         |description |
 |:----------------|:-----------|
@@ -32,3 +32,5 @@ The codebook for your data file(s) using the following format.
 |AD_gain & AD_loss| Choice in 1981 "Asian Disease Scenario" Conditions 
 |AD_check| 
 |Scale_PSS10_UCLA_1	- Scale_PSS10_UCLA_10| UCLA Loneliness Scale 
+
+glimpse()
