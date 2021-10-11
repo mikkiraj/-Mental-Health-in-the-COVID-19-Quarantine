@@ -1,7 +1,5 @@
 # data
 
-Place data file(s) in this folder.
-
 Then, include metadata about your dataset including information on provenance, codebook, etc.
 
 The codebook for your data file(s) using the following format.
@@ -33,4 +31,9 @@ The codebook for your data file(s) using the following format.
 |AD_check| 
 |Scale_PSS10_UCLA_1	- Scale_PSS10_UCLA_10| UCLA Loneliness Scale 
 
-glimpse()
+'''
+{r COVID-data}
+  glimpse()
+'''
+
+
