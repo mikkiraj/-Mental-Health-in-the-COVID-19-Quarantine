@@ -36,8 +36,21 @@ covidstressdata <-covid1 %>%
 Our dataset had to be split in order to upload to github. Here the data is joined. 
 
 # Introduction and Data, including Research Questions
-
-(The introduction should introduce your general research question and your data (where it came from, how it was collected, what are the cases, what are the variables, etc.). Your research questions should be clearly specified. The motivation for your research question should be clear, with citations to relevant literature as appropriate.)
+  After two on-campus suicides in the past month, students and administrators at the University of North Carolina at Chapel Hill have spoken out about the mental health crisis that has arisen alongside the COVID-19 pandemic, comparing declining mental health and suicide to “a second pandemic” (Klessen, 2021). Mental health crises so close to home highlight how a pandemic like COVID-19 is not merely a medical phenomenon, but also show how institutional organizations have failed to destigmatize and target the socio-psychological consequences that arose from social and economic restrictions during this global health crisis (Javed et. al, 2020, Yamada et. al 2021). In particular, emerging evidence indicates that the mental health impacts will be long-lasting and greatest globally in under-served populations of lower and middle income countries, emphasizing a need for a balanced solution that identifies and addresses the social determinants of mental health during this pandemic (Kola, 2021). 
+Because of the pertinence and importance of this critical issue, our team has proposed the research question: How does age, gender, and level of isolation affect global mental health outcomes during COVID-19? To explore our question, we will reference data from the COVIDiStress Global Survey focused on the psychological and behavioural impact of the coronavirus crisis from the Open Science Framework database. The collection efforts for this data spanned from March to May of 2020, and used survey forms available in 47 languages across 179 countries. In total, the stored dataset represents 125,306 people with demographic characteristics for countries with over 200 responses who met the survey inclusion criteria (18 years of age and older and gave informed consent) and accessed the online survey link to provide their experiences over a period of 62 days. A variety of adults with varying personalities, loneliness levels, and stress levels provided self-reports about the proximate psychological effects of the COVID-19 pandemic, which were translated as indicators for mental health outcomes. A wide range of variables were collected during this study, including general demographic data, psychological effects of COVID-19, levels of risk taking intention during the pandemic, personality characteristics, loneliness levels through the UCLA loneliness scale, stress levels from the Perceived Stress Scale, levels of interpersonal and institutional trust during the pandemic, and willingness to comply with pandemic regulations. More specific variables observed include experiences of distress and worry due to COVID-19 restrictions, psychological coping mechanisms during quarantine, and availability of social support using the Social Provisions Scale. To respond to the survey questions, participants typically supplied their answers on a 6-point Likert scale ranging from ‘Strongly disagree’ to ‘Strongly agree,’ and added text to explain some of their choices (Yamada, 2021).. 
+ 
+References
+Klessen, B. (2021). UNC Chapel Hill cancels classes Tuesday amid two suicide investigations. 
+NBC News. https://www.nbcnews.com/news/us-news/unc-chapel-hill-cancels-classes-tuesday-amid-two-suicide-investigations-n1281229.
+ 
+Javed, B., Sarwer, A., Soto, E. B., & Mashwani, Z. U. (2020). The coronavirus (COVID-19) 
+pandemic's impact on mental health. The International journal of health planning and management, 35(5), 993–996. https://doi.org/10.1002/hpm.3008
+ 
+L. Kola, B.A. Kohrt, C. Hanlon, J.A. Naslund, S. Sikander, M. Balaji, C. Benjet, E.Y. Cheung, J. 
+Eaton, P. Gonsalves, M. Hailemariam, N.P. Luitel, D.B. Machado, E.Misganow, O. Omigbodun, T. Roberts, T.T. Salisbury, R. Shidhaye, V. Su. (2021). COVID-19 mental health impact and responses in low-income and middle-income countries: Reimagining global mental health, Lancet Psychiatry (8) pp. 535-550, https://doi.org/10.1016/S2215-0366(21)00025-0.
+ 
+Yamada, Y., Ćepulić, DB., Coll-Martín, T. et al. COVIDiSTRESS Global Survey dataset on 
+psychological and behavioural consequences of the COVID-19 outbreak. Sci Data 8, 3 (2021). https://doi.org/10.1038/s41597-020-00784-9 
 
 # Glimpse
 This is the condensed glimpse because there are 154 variables. We have selected the first 19, but the full list can be found in the readme file. 
@@ -59,18 +72,16 @@ health during COVID-19 globally?” In order to answer this, our predictor varia
   Our null hypothesis is that no factor has a statistically significant correlation on any scale of psychological well-being in a global population. Our alternate hypothesis for each of our tests is that age, gender, or level of isolation will have a correlation with our various scales of psychological well-being, PSS-10, SPS-15, and SLON-3. 
 In order for our hypothesized answer to be correct, the mean levels of the well-being scales must be statistically different (p-value <0.05) when comparing mean values of the PSS-10, SPS-15, or SLON-3 scales across each of our two different scenarios of three explanatory variables (age, gender, or isolation). 
 
-Preliminary visualizations are below.
-
-```{r gender-visual, warning=FALSE, out.width = "20%"}
+```{r gender-visual, warning=FALSE, out.width = "40%"}
 cleancovid %>%
   filter(Dem_gender %in% c("Male", "Female")) %>%
   ggplot(aes(x = Dem_gender)) + geom_bar()
 ```
-```{r age-visual, warning=FALSE, out.width = "20%"}
+```{r age-visual, warning=FALSE, out.width = "40%"}
 cleancovid %>%
   ggplot(aes(x = Dem_age)) + geom_histogram()
 ```
-```{r isolation-visual, warning=FALSE, out.width = "20%"}
+```{r isolation-visual, warning=FALSE, out.width = "40%"}
 cleancovid %>%
   filter(Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual")) %>%
   ggplot(aes(x = Dem_isolation)) + geom_bar() 
