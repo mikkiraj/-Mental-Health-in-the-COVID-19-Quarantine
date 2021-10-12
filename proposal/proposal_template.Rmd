@@ -12,6 +12,8 @@ output: pdf_document
 library(tidyverse) 
 library(infer)
 library(readxl)
+library(skimr)
+library(dplyr)
 ``` 
 
 # Load Data
@@ -39,7 +41,11 @@ Our dataset had to be split in order to upload to github. Here the data is joine
 
 # Glimpse
 
-(Please use `glimpse` for your data, uploaded into the data folder, here.)
+```{r}
+cleancovid <- subset (covidstressdata, select = -c(AD_loss,AD_gain)) #removed because of laTex incompatible symbols in clm 
+glimpse(cleancovid)
+```
+
 
 # Data Analysis Plan
 
