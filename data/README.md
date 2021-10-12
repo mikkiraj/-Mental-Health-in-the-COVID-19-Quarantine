@@ -27,6 +27,7 @@
 |Scale_PSS10_UCLA items 1-10| Perceived stress for the past week
 |Scale_PSS10_UCLA items 11-13|Perceived Loneliness
 |SLON-3| Self-report scale of loneliness 
-|...|...
+|SFS-15| Social Connectness Scale 
+|...| 
 
 
