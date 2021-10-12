@@ -10,11 +10,28 @@ output: pdf_document
 
 ```{r load-packages, message = FALSE, warning = FALSE}
 library(tidyverse) 
+library(infer)
+library(readxl)
 ``` 
 
 # Load Data
 ```{r load-data, message = F}
+covid1=read_excel("/home/guest/R/the-statistical-power-puffs/data/COVIDiSTRESS_May30_First.xlsx", sheet= 1)
+covid2=read_excel("/home/guest/R/the-statistical-power-puffs/data/COVIDiSTRESS_May30_Second.xlsx", sheet= 1)
+covid3=read_excel("/home/guest/R/the-statistical-power-puffs/data/COVIDiSTRESS_May 30_Third.xlsx", sheet= 1)
+covid4=read_excel("/home/guest/R/the-statistical-power-puffs/data/COVIDiSTRESS_May 30_Fourth.xlsx", sheet= 1)
+covid5=read_excel("/home/guest/R/the-statistical-power-puffs/data/COVIDiSTRESS_May 30_Fifth.xlsx", sheet= 1)
 ```
+
+#Join Data 
+```{r join-data, message = FALSE, warning = FALSE}
+covidstressdata <-covid1 %>%
+  full_join(covid2) %>%
+  full_join(covid3) %>%
+  full_join(covid4) %>%
+  full_join(covid5)
+```
+Our dataset had to be split in order to upload to github. Here the data is joined. 
 
 # Introduction and Data, including Research Questions
 
