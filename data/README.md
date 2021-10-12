@@ -28,7 +28,8 @@ The codebook for your data file(s) using the following format.
 |Dem_isolation_adults| Level of isolation for adults 
 |Dem_isolation_kids| Level of isolation for kids 
 |AD_gain & AD_loss| Choice in 1981 "Asian Disease Scenario" Conditions 
-|AD_check| 
-|Scale_PSS10_UCLA_1	- Scale_PSS10_UCLA_10| UCLA Loneliness Scale 
+|Scale_PSS10_UCLA items 1-10| Perceived stress for the past week
+|Scale_PSS10_UCLA items 11-13|Perceived Loneliness
+|SLON-3| Self-report scale of loneliness 
 
 
