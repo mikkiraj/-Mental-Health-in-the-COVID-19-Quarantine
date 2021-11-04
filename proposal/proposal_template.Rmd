@@ -17,14 +17,15 @@ library(dplyr)
 ``` 
 
 # Load Data
-```{r load-data, message = F}
+```{r load-data, message = F, cache = TRUE}
 covid1=read_excel("../data/COVIDiSTRESS_May30_First.xlsx", sheet= 1)
 covid2=read_excel("../data/COVIDiSTRESS_May30_Second.xlsx", sheet= 1)
 covid3=read_excel("../data/COVIDiSTRESS_May 30_Third.xlsx", sheet= 1)
 covid4=read_excel("../data/COVIDiSTRESS_May 30_Fourth.xlsx", sheet= 1)
 covid5=read_excel("../data/COVIDiSTRESS_May 30_Fifth.xlsx", sheet= 1)
 ```
-```{r join-data, message = FALSE, warning = FALSE, echo = FALSE}
+
+```{r join-data, message = FALSE, warning = FALSE, echo = FALSE, cache = TRUE}
 covidstressdata <-covid1 %>%
   full_join(covid2) %>%
   full_join(covid3) %>%
@@ -61,6 +62,10 @@ glimpse(glimpsecovid)
   Our null hypothesis is that no factor has a statistically significant correlation on any scale of psychological well-being in a global population. Our alternate hypothesis for each of our tests is that age, gender, or level of isolation (or other factors) will have a more significant correlation than other factors with our various scales of psychological well-being, PSS-10, SPS-15, and SLON-3. 
 In order for our hypothesized answer to be correct, the mean levels of the well-being scales must be statistically different (p-value <0.05) when comparing mean values of the PSS-10, SPS-15, or SLON-3 scales across each of our two different scenarios of three explanatory variables (age, gender, or isolation). 
 
+```{r groupingdata,  warning=FALSE, echo=FALSE}
+
+```
+
 
 ```{r visual, warning=FALSE, echo=FALSE, fig.height = 1.5}
 cleancovid %>%
@@ -74,3 +79,10 @@ cleancovid %>%
   filter(Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual")) %>%
   ggplot(aes(x = Dem_isolation)) + geom_bar() + labs(title= "Levels of Isolation", x= "Isolation Level", y= "Individuals")
 ```
+
+```{r explantoryvariables}
+covidforanalysis <- subset (cleancovid, select = c(1:40))  %>%
+    mutate(pssmean = sum(1,c(20:29), na.rm = TRUE)/10) 
+```
+
+

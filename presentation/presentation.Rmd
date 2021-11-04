@@ -1,7 +1,7 @@
 ---
-title: "Presentation title"
+title: "Mental Health in the COVID-19 Quarantine"
 subtitle: "Presentation subtitle (if any)"
-author: "Team name <br> Names of team members"
+author: "Statistical Power Puffs: Michelle Huang, Bhavika Garg, Mihika Rajvanshi"
 institute: "Duke University"
 date: "`r Sys.Date()`"
 output:
@@ -23,6 +23,10 @@ library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
+library(infer)
+library(readxl)
+library(skimr)
+library(dplyr)
 ```
 
 ```{r setup, include=FALSE}
@@ -36,22 +40,72 @@ knitr::opts_chunk$set(
   )
 ```
 
-```{r load-data, include=FALSE}
-# Load your data here
+```{r load-data, include=FALSE, echo = FALSE, cache = TRUE}
+covid1=read_excel("../data/COVIDiSTRESS_May30_First.xlsx", sheet= 1)
+covid2=read_excel("../data/COVIDiSTRESS_May30_Second.xlsx", sheet= 1)
+covid3=read_excel("../data/COVIDiSTRESS_May 30_Third.xlsx", sheet= 1)
+covid4=read_excel("../data/COVIDiSTRESS_May 30_Fourth.xlsx", sheet= 1)
+covid5=read_excel("../data/COVIDiSTRESS_May 30_Fifth.xlsx", sheet= 1)
 ```
+
+```{r join-data, message = FALSE, warning = FALSE, echo = FALSE, cache = TRUE}
+covidstressdata <-covid1 %>%
+  full_join(covid2) %>%
+  full_join(covid3) %>%
+  full_join(covid4) %>%
+  full_join(covid5)
+```
+
+```{r clean-data, message = FALSE, warning = FALSE, echo = FALSE, cache = TRUE }
+cleancovid <- subset (covidstressdata, select = -c(AD_gain, AD_loss)) #removed because of laTex incompatible but will use this for analysis 
+```
+
 
 ```{r style-slides, echo = FALSE}
 style_xaringan(
-  title_slide_background_image = "img/watercolour_sys02_img34_teacup-ocean.jpg"
+  title_slide_background_image = "img/covidpicdark.jpeg"
 )
 ```
 
 class: inverse, middle, center
 
-# Using xaringan
+#Our stuff (Mikki's updates)
 
 ---
 
+## Data Overview
+
+- Talk about intro here 
+- The different measures of depression 
+
+---
+
+## Demographics Overview - Gender
+
+```{r visual-gender, warning = FALSE, echo = FALSE, fig.height = 1.5}
+cleancovid %>%
+  filter(Dem_gender %in% c("Male", "Female")) %>%
+  ggplot(aes(x = Dem_gender)) + geom_bar() +labs(title= "Gender Distributions", x= "Gender", y= "Individuals")
+```
+---
+
+## Demographics Overview - Age
+
+```{r visual-age, warning = FALSE, echo = FALSE, fig.height = 1.5}
+cleancovid %>%
+  ggplot(aes(x = Dem_age)) + geom_histogram() + labs(title= "Age Distributions", x= "Age", y= "Individuals")
+```
+
+---
+
+## Demographics Overview - Isolation Levels
+```{r visual-isolation, warning = FALSE, echo = FALSE, fig.height = 1.5}
+cleancovid %>%
+  filter(Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual")) %>%
+  ggplot(aes(x = Dem_isolation)) + geom_bar() + labs(title= "Levels of Isolation", x= "Isolation Level", y= "Individuals")
+```
+
+---
 ## xaringan
 
 - The presentation is created using the `xaringan` package
