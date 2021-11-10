@@ -81,8 +81,10 @@ cleancovid %>%
 ```
 
 ```{r explantoryvariables}
-covidforanalysis <- subset (cleancovid, select = c(1:40))  %>%
-    mutate(pssmean = sum(1,c(20:29), na.rm = TRUE)/10) 
+#covidforanalysis <- subset (cleancovid, select = c(1:40))  %>%
+  #group_by(ID)%>%
+  # mutate(pssmean = sum(Scale_PSS10_UCLA_1:Scale_PSS10_UCLA_10, na.rm = TRUE)/10) %>%
+#print(pssmean)
 ```
 
 
