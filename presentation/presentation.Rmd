@@ -1,6 +1,5 @@
 ---
 title: "Mental Health in the COVID-19 Quarantine"
-subtitle: "Presentation subtitle (if any)"
 author: "Statistical Power Puffs: Michelle Huang, Bhavika Garg, Mihika Rajvanshi"
 institute: "Duke University"
 date: "`r Sys.Date()`"
@@ -82,27 +81,41 @@ class: inverse, middle, center
 
 ## Demographics Overview - Gender
 
-```{r visual-gender, warning = FALSE, echo = FALSE, fig.height = 1.5}
+```{r visual-1, warning=FALSE, echo=FALSE, fig.height = 1.5}
 cleancovid %>%
   filter(Dem_gender %in% c("Male", "Female")) %>%
-  ggplot(aes(x = Dem_gender)) + geom_bar() +labs(title= "Gender Distributions", x= "Gender", y= "Individuals")
+  ggplot(aes(x = Dem_gender, fill = Dem_gender ))+ 
+  geom_bar() +
+  labs(title= "Gender Distributions", 
+       x= "Gender", 
+       y= "Individuals", 
+       fill = "Gender") 
 ```
 ---
 
 ## Demographics Overview - Age
 
-```{r visual-age, warning = FALSE, echo = FALSE, fig.height = 1.5}
+```{r visual-2, warning=FALSE, echo=FALSE, fig.height = 1.5}
 cleancovid %>%
-  ggplot(aes(x = Dem_age)) + geom_histogram() + labs(title= "Age Distributions", x= "Age", y= "Individuals")
+  ggplot(aes(x = Dem_age)) + 
+  geom_histogram(fill = "pink") + 
+  labs(title= "Age Distributions", 
+       x= "Age",
+      y= "Individuals")
 ```
 
 ---
 
 ## Demographics Overview - Isolation Levels
-```{r visual-isolation, warning = FALSE, echo = FALSE, fig.height = 1.5}
+```{r visual-3, warning=FALSE, echo=FALSE, fig.height = 1.5}
 cleancovid %>%
   filter(Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual")) %>%
-  ggplot(aes(x = Dem_isolation)) + geom_bar() + labs(title= "Levels of Isolation", x= "Isolation Level", y= "Individuals")
+  ggplot(aes(x = Dem_isolation, fill = Dem_isolation)) + 
+  geom_bar() + 
+  labs(title= "Levels of Isolation", 
+       x= "Isolation Level", 
+       y= "Individuals", 
+       fill = "Level of Isolation")
 ```
 
 ---
@@ -183,7 +196,6 @@ ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
   geom_boxplot() +
   theme_minimal()
 ```
-]
 
 ---
 

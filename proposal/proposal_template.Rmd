@@ -51,8 +51,13 @@ psychological and behavioural consequences of the COVID-19 outbreak. Sci Data 8,
 This is the condensed glimpse because there are 154 variables. We have selected the first 13, but the full list can be found in the readme file. The data was joined via full_join. Code not shown in output file. 
 
 ```{r glimpse}
-cleancovid <- subset (covidstressdata, select = -c(AD_gain, AD_loss)) #removed because of laTex incompatible but will use this for analysis 
+cleancovid <- subset (covidstressdata, select = -c(AD_gain, AD_loss, RecordedDate, Duration..in.seconds., UserLanguage, Dem_edu_mom, Dem_Expat, Dem_state, Dem_riskgroup, AD_check, Trust_countrymeasure))%>%
+  #removed because of laTex incompatible but will use this for analysis 
+  
+filter(Dem_gender %in% c("Male", "Female"), answered_all == "Yes", Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual"), Dem_maritalstatus %in% c("Single", "Divorced/widowed", "Married/cohabiting"), Dem_employment %in% c("Not employed", "Retired", "Full time employed", "Student", "Part time employed", "Self-employed"), Dem_dependents %in%c (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+
 glimpsecovid <- subset (covidstressdata, select = -c(Dem_maritalstatus:Scale_UCLA_TRI_avg))  #condensed for proposal
+
 glimpse(glimpsecovid)
 ```
 
@@ -62,29 +67,66 @@ glimpse(glimpsecovid)
   Our null hypothesis is that no factor has a statistically significant correlation on any scale of psychological well-being in a global population. Our alternate hypothesis for each of our tests is that age, gender, or level of isolation (or other factors) will have a more significant correlation than other factors with our various scales of psychological well-being, PSS-10, SPS-15, and SLON-3. 
 In order for our hypothesized answer to be correct, the mean levels of the well-being scales must be statistically different (p-value <0.05) when comparing mean values of the PSS-10, SPS-15, or SLON-3 scales across each of our two different scenarios of three explanatory variables (age, gender, or isolation). 
 
-```{r groupingdata,  warning=FALSE, echo=FALSE}
 
-```
-
-
-```{r visual, warning=FALSE, echo=FALSE, fig.height = 1.5}
+```{r visual-1, warning=FALSE, echo=FALSE, fig.height = 1.5}
 cleancovid %>%
   filter(Dem_gender %in% c("Male", "Female")) %>%
-  ggplot(aes(x = Dem_gender)) + geom_bar() +labs(title= "Gender Distributions", x= "Gender", y= "Individuals")
-
-cleancovid %>%
-  ggplot(aes(x = Dem_age)) + geom_histogram() + labs(title= "Age Distributions", x= "Age", y= "Individuals")
-
-cleancovid %>%
-  filter(Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual")) %>%
-  ggplot(aes(x = Dem_isolation)) + geom_bar() + labs(title= "Levels of Isolation", x= "Isolation Level", y= "Individuals")
+  ggplot(aes(x = Dem_gender, fill = Dem_gender ))+ 
+  geom_bar() +
+  labs(title= "Gender Distributions", 
+       x= "Gender", 
+       y= "Individuals", 
+       fill = "Gender") 
 ```
 
-```{r explantoryvariables}
-#covidforanalysis <- subset (cleancovid, select = c(1:40))  %>%
-  #group_by(ID)%>%
-  # mutate(pssmean = sum(Scale_PSS10_UCLA_1:Scale_PSS10_UCLA_10, na.rm = TRUE)/10) %>%
-#print(pssmean)
+
+```{r visual-2, warning=FALSE, echo=FALSE, fig.height = 1.5}
+cleancovid %>%
+  ggplot(aes(x = Dem_age)) + 
+  geom_histogram(fill = "pink") + 
+  labs(title= "Age Distributions", 
+       x= "Age",
+      y= "Individuals")
+```
+
+
+```{r visual-3, warning=FALSE, echo=FALSE, fig.height = 1.5}
+cleancovid %>%
+  filter(Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual")) %>%
+  ggplot(aes(x = Dem_isolation, fill = Dem_isolation)) + 
+  geom_bar() + 
+  labs(title= "Levels of Isolation", 
+       x= "Isolation Level", 
+       y= "Individuals", 
+       fill = "Level of Isolation")
+```
+
+```{r filter-NA}
+covidforanalysis <- subset (cleancovid, select = c(1:40)) %>%
+filter(Scale_PSS10_UCLA_1 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_PSS10_UCLA_2 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_PSS10_UCLA_3 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_PSS10_UCLA_4 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_PSS10_UCLA_5 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_PSS10_UCLA_6 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_PSS10_UCLA_7 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_PSS10_UCLA_8 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_PSS10_UCLA_9 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_PSS10_UCLA_10 %in% c(1, 2, 3, 4, 5))
+```
+
+
+```{r explanatoryvariables}
+#covidforanalysistest <- subset (covidforanalysis, select = c(21:23)) %>%
+ # Scale_PSS10_UCLA_1 <-as.numeric(as.character(covidforanalysistest$Scale_PSS10_UCLA_1))%>%
+# Scale_PSS10_UCLA_2 <-as.numeric(as.character(covidforanalysistest$Scale_PSS10_UCLA_2))%>%
+#covidforanalysistest$pssmean = rowSums(covidforanalysistest)
+
+```
+
+```{r }
+
+
 ```
 
 
