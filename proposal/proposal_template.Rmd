@@ -18,19 +18,22 @@ library(dplyr)
 
 # Load Data
 ```{r load-data, message = F, cache = TRUE}
-covid1=read_excel("../data/COVIDiSTRESS_May30_First.xlsx", sheet= 1)
-covid2=read_excel("../data/COVIDiSTRESS_May30_Second.xlsx", sheet= 1)
-covid3=read_excel("../data/COVIDiSTRESS_May 30_Third.xlsx", sheet= 1)
-covid4=read_excel("../data/COVIDiSTRESS_May 30_Fourth.xlsx", sheet= 1)
-covid5=read_excel("../data/COVIDiSTRESS_May 30_Fifth.xlsx", sheet= 1)
+# covid1=read_excel("../data/COVIDiSTRESS_May30_First.xlsx", sheet= 1)
+# covid2=read_excel("../data/COVIDiSTRESS_May30_Second.xlsx", sheet= 1)
+# covid3=read_excel("../data/COVIDiSTRESS_May 30_Third.xlsx", sheet= 1)
+# covid4=read_excel("../data/COVIDiSTRESS_May 30_Fourth.xlsx", sheet= 1)
+# covid5=read_excel("../data/COVIDiSTRESS_May 30_Fifth.xlsx", sheet= 1)
 ```
 
 ```{r join-data, message = FALSE, warning = FALSE, echo = FALSE, cache = TRUE}
-covidstressdata <-covid1 %>%
-  full_join(covid2) %>%
-  full_join(covid3) %>%
-  full_join(covid4) %>%
-  full_join(covid5)
+# covidstressdata <-covid1 %>%
+#   full_join(covid2) %>%
+#   full_join(covid3) %>%
+#   full_join(covid4) %>%
+#   full_join(covid5)
+
+# write_csv(covidstressdata, "../data/covidstressdata.csv")
+covidstressdata <- read_csv("../data/covidstressdata.csv")
 ```
 # Introduction and Data, including Research Questions
 
@@ -101,8 +104,8 @@ cleancovid %>%
        fill = "Level of Isolation")
 ```
 
-```{r filter-NA}
-covidforanalysis <- subset (cleancovid, select = c(1:40)) %>%
+```{r filter-PSS-NA}
+covidforanalysis <- subset (cleancovid, select = c(13:22)) %>%
 filter(Scale_PSS10_UCLA_1 %in% c(1, 2, 3, 4, 5))%>%
 filter(Scale_PSS10_UCLA_2 %in% c(1, 2, 3, 4, 5))%>%
 filter(Scale_PSS10_UCLA_3 %in% c(1, 2, 3, 4, 5))%>%
@@ -116,17 +119,158 @@ filter(Scale_PSS10_UCLA_10 %in% c(1, 2, 3, 4, 5))
 ```
 
 
-```{r explanatoryvariables}
-#covidforanalysistest <- subset (covidforanalysis, select = c(21:23)) %>%
- # Scale_PSS10_UCLA_1 <-as.numeric(as.character(covidforanalysistest$Scale_PSS10_UCLA_1))%>%
-# Scale_PSS10_UCLA_2 <-as.numeric(as.character(covidforanalysistest$Scale_PSS10_UCLA_2))%>%
-#covidforanalysistest$pssmean = rowSums(covidforanalysistest)
-
+```{r explanatoryvariables-PSSmeans}
+covidforanalysis$Scale_PSS10_UCLA_1 <- as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_1))
 ```
 
-```{r }
+
+```{r explanatoryvariables-PSSmeans2}
+covidforanalysis$Scale_PSS10_UCLA_2 <-  as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_2))
+```
 
 
+```{r explanatoryvariables-PSSmeans3}
+covidforanalysis$Scale_PSS10_UCLA_3 <- as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_3))
+```
+
+
+```{r explanatoryvariables-PSSmeans4}
+covidforanalysis$Scale_PSS10_UCLA_4 <- as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_4))
+```
+
+
+```{r explanatoryvariables-PSSmeans5}
+covidforanalysis$Scale_PSS10_UCLA_5 <- as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_5))
+```
+
+
+```{r explanatoryvariables-PSSmeans6}
+covidforanalysis$Scale_PSS10_UCLA_6 <- as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_6))
+```
+
+
+```{r explanatoryvariables-PSSmeans7}
+covidforanalysis$Scale_PSS10_UCLA_7 <- as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_7))
+```
+
+
+```{r explanatoryvariables-PSSmeans8}
+covidforanalysis$Scale_PSS10_UCLA_8 <- as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_8))
+```
+
+
+```{r explanatoryvariables-PSSmeans9}
+covidforanalysis$Scale_PSS10_UCLA_9 <- as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_9))
+```
+
+
+```{r explanatoryvariables-PSSmeans10}
+covidforanalysis$Scale_PSS10_UCLA_10 <- as.numeric(as.character(covidforanalysis$Scale_PSS10_UCLA_10))
+```
+
+
+```{r explanatoryvariables-PSSmeans11}
+covidforanalysis <- covidforanalysis %>%
+  select(Scale_PSS10_UCLA_1:Scale_PSS10_UCLA_10) %>%
+  mutate(PSSmeans = rowMeans(across(where(is.numeric))))
+```
+
+```{r filter-SLON-NA}
+covidforanalysis2 <- subset (cleancovid, select = c(23:25)) %>%
+filter(Scale_SLON_1 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_SLON_2 %in% c(1, 2, 3, 4, 5))%>%
+filter(Scale_SLON_3 %in% c(1, 2, 3, 4, 5))
+```
+
+```{r explanatoryvariables-SLONmeans}
+covidforanalysis2$Scale_SLON_1 <- as.numeric(as.character(covidforanalysis2$Scale_SLON_1))
+```
+
+
+```{r explanatoryvariables-SLONmeans2}
+covidforanalysis2$Scale_SLON_2 <- as.numeric(as.character(covidforanalysis2$Scale_SLON_2))
+```
+
+
+```{r explanatoryvariables-SLONmeans3}
+covidforanalysis2$Scale_SLON_3 <- as.numeric(as.character(covidforanalysis2$Scale_SLON_3))
+```
+
+
+```{r explanatoryvariables-SLONmeans4}
+covidforanalysis2 <- covidforanalysis2 %>%
+  select(Scale_SLON_1: Scale_SLON_3) %>%
+  mutate(SLONmeans = rowMeans(across(where(is.numeric))))
+```
+
+```{r filter-SPS-NA}
+covidforanalysis3 <- subset (cleancovid, select = c(101:110)) %>%
+filter(SPS_1 %in% c(1, 2, 3, 4, 5, 6))%>%
+filter(SPS_2 %in% c(1, 2, 3, 4, 5, 6))%>%
+filter(SPS_3 %in% c(1, 2, 3, 4, 5, 6))%>%
+filter(SPS_4 %in% c(1, 2, 3, 4, 5, 6))%>%
+filter(SPS_5 %in% c(1, 2, 3, 4, 5, 6))%>%
+filter(SPS_6 %in% c(1, 2, 3, 4, 5, 6))%>%
+filter(SPS_7 %in% c(1, 2, 3, 4, 5, 6))%>%
+filter(SPS_8 %in% c(1, 2, 3, 4, 5, 6))%>%
+filter(SPS_9 %in% c(1, 2, 3, 4, 5, 6))%>%
+filter(SPS_10 %in% c(1, 2, 3, 4, 5, 6))
+```
+
+```{r explanatoryvariables-SPSmeans}
+covidforanalysis3$SPS_1 <- as.numeric(as.character(covidforanalysis3$SPS_1))
+```
+
+
+```{r explanatoryvariables-SPSmeans2}
+covidforanalysis3$SPS_2 <- as.numeric(as.character(covidforanalysis3$SPS_2))
+```
+
+
+```{r explanatoryvariables-SPSmeans3}
+covidforanalysis3$SPS_3 <- as.numeric(as.character(covidforanalysis3$SPS_3))
+```
+
+
+```{r explanatoryvariables-SPSmeans4}
+covidforanalysis3$SPS_4 <- as.numeric(as.character(covidforanalysis3$SPS_4))
+```
+
+
+```{r explanatoryvariables-SPSmeans5}
+covidforanalysis3$SPS_5 <- as.numeric(as.character(covidforanalysis3$SPS_5))
+```
+
+
+```{r explanatoryvariables-SPSmeans6}
+covidforanalysis3$SPS_6 <- as.numeric(as.character(covidforanalysis3$SPS_6))
+```
+
+
+```{r explanatoryvariables-SPSmeans7}
+covidforanalysis3$SPS_7 <- as.numeric(as.character(covidforanalysis3$SPS_7))
+```
+
+
+```{r explanatoryvariables-SPSmeans8}
+covidforanalysis3$SPS_8 <- as.numeric(as.character(covidforanalysis3$SPS_8))
+```
+
+
+```{r explanatoryvariables-SPSmeans9}
+covidforanalysis3$SPS_9 <- as.numeric(as.character(covidforanalysis3$SPS_9))
+```
+
+
+```{r explanatoryvariables-SPSmeans10}
+covidforanalysis3$SPS_10 <- as.numeric(as.character(covidforanalysis3$SPS_10))
+```
+
+
+```{r explanatoryvariables-SPSmeans11}
+covidforanalysis3 <- covidforanalysis3 %>%
+  select(SPS_1:SPS_10) %>%
+  mutate(SPSmeans = rowMeans(across(where(is.numeric))))
 ```
 
 
