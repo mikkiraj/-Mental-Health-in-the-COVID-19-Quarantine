@@ -57,11 +57,19 @@ This is the condensed glimpse because there are 154 variables. We have selected 
 cleancovid <- subset (covidstressdata, select = -c(AD_gain, AD_loss, RecordedDate, Duration..in.seconds., UserLanguage, Dem_edu_mom, Dem_Expat, Dem_state, Dem_riskgroup, AD_check, Trust_countrymeasure))%>%
   #removed because of laTex incompatible but will use this for analysis 
   
-filter(Dem_gender %in% c("Male", "Female"), answered_all == "Yes", Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual"), Dem_maritalstatus %in% c("Single", "Divorced/widowed", "Married/cohabiting"), Dem_employment %in% c("Not employed", "Retired", "Full time employed", "Student", "Part time employed", "Self-employed"), Dem_dependents %in%c (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+filter(Dem_gender %in% c("Male", "Female"), answered_all == "Yes", Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual"), Dem_maritalstatus %in% c("Single", "Divorced/widowed", "Married/cohabiting"), Dem_employment %in% c("Not employed", "Retired", "Full time employed", "Student", "Part time employed", "Self-employed"), Dem_dependents %in%c (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)) %>%
+
+mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf)))
 
 glimpsecovid <- subset (covidstressdata, select = -c(Dem_maritalstatus:Scale_UCLA_TRI_avg))  #condensed for proposal
 
+print(cleancovid$Dem_dependentsgrouped)
 glimpse(glimpsecovid)
+
+ #mutate(bmiclass = cut(BMI,
+   
+#breaks = c(-Inf, 18.5, 25, 30, 35, 40, Inf),
+
 ```
 
 # Data Analysis Plan
@@ -272,5 +280,31 @@ covidforanalysis3 <- covidforanalysis3 %>%
   select(SPS_1:SPS_10) %>%
   mutate(SPSmeans = rowMeans(across(where(is.numeric))))
 ```
+
+```{r ttest-gender}
+genderPSSttest <- t.test(covidforanalysis$PSSmeans~cleancovid$Dem_gender, var.equal=FALSE)
+genderSLONttest <- t.test(covidforanalysis2$SLONmeans~cleancovid$Dem_gender, var.equal=FALSE)
+genderSPSttest <- t.test(covidforanalysis3$SPSmeans~cleancovid$Dem_gender, var.equal=FALSE)
+```
+
+
+```{r anova-isolation}
+anovaPSSisolation <- summary(aov(covidforanalysis$PSSmeans~cleancovid$Dem_isolation))
+anovaSlONisolation <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_isolation))
+anovaSPSisolation <- summary(aov(covidforanalysis3$SPSmeans~cleancovid$Dem_isolation))
+```
+
+```{r anova-marital}
+anovaPSSmarital <- summary(aov(covidforanalysis$PSSmeans~cleancovid$Dem_maritalstatus))
+anovaSlONmarital <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_maritalstatus))
+anovaSPSmarital <- summary(aov(covidforanalysis3$SPSmeans~cleancovid$Dem_maritalstatus))
+```
+
+```{r anova-employment}
+anovaPSSemploy <- summary(aov(covidforanalysis$PSSmeans~cleancovid$Dem_employment))
+anovaSlONemploy <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_employment))
+anovaSPSemploy <- summary(aov(covidforanalysis3$SPSmeans~cleancovid$Dem_employment))
+```
+
 
 
