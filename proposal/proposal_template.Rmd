@@ -9,7 +9,8 @@ output: pdf_document
 # Load Packages
 
 ```{r load-packages, message = FALSE, warning = FALSE}
-library(tidyverse) 
+library(tidyverse)
+library(tidymodels)
 library(infer)
 library(readxl)
 library(skimr)
@@ -311,3 +312,156 @@ anovaPSSdepend <- summary(aov(covidforanalysis$PSSmeans~cleancovid$Dem_dependent
 anovaSLONdepend <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_dependentsgrouped))
 anovaSPSdepend <- summary(aov(covidforanalysis3$SPSmeans~cleancovid$Dem_dependentsgrouped))
 ```
+
+```{r lin-reg-age}
+covid_PSSage <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis$PSSmeans~cleancovid$Dem_age, data = cleancovid)
+  covid_PSSage_tidy <- tidy(covid_PSSage, conf.int=TRUE)
+  print( covid_PSSage_tidy)
+  
+covid_SLONage <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis2$SLONmeans~cleancovid$Dem_age, data = cleancovid)
+  covid_SLONage_tidy <- tidy(covid_SLONage, conf.int = TRUE)
+  print(covid_SLONage_tidy)
+  
+covid_SPSage <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis3$SPSmeans~cleancovid$Dem_age, data = cleancovid)
+  covid_SPSage_tidy <-tidy(covid_SPSage, conf.int = TRUE)
+  print(covid_SPSage_tidy)
+```
+
+```{r plot-lin-reg-age}
+#PSSmeans
+ggplot(data = cleancovid, 
+       aes(x = Dem_age, 
+           y = covidforanalysis$PSSmeans)) +
+  geom_point(alpha=.5) +
+  geom_smooth(method = "lm",
+              se = FALSE, 
+              color = "pink") +
+  labs(
+    title = "PSS means and Age",
+    x = "Age",
+    y = "PSS means"
+      )
+
+#SLONmeans
+ggplot(data = cleancovid, 
+       aes(x = Dem_age, 
+           y = covidforanalysis2$SLONmeans)) +
+  geom_point(alpha=.5) +
+  geom_smooth(method = "lm",
+              se = FALSE, 
+              color = "blue") +
+  labs(
+    title = "SLON means and Age",
+    x = "Age",
+    y = "SLON means"
+      )
+
+#SPSmeans
+ggplot(data = cleancovid, 
+       aes(x = Dem_age, 
+           y = covidforanalysis3$SPSmeans)) +
+  geom_point(alpha=.5) +
+  geom_smooth(method = "lm",
+              se = FALSE, 
+              color = "blue") +
+  labs(
+    title = "SPS means and Age",
+    x = "Age",
+    y = "SPS means"
+      )
+
+```
+
+
+```{r lin-reg-overall}
+covid_PSS <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis$PSSmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped, data = cleancovid)
+  covid_PSS_tidy <- tidy(covid_PSS, conf.int=TRUE)
+  print(covid_PSS_tidy)
+  
+covid_SLON <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis2$SLONmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped, data = cleancovid)
+  covid_SLON_tidy <- tidy(covid_SLON, conf.int=TRUE)
+  print(covid_SLON_tidy)
+  
+covid_SPS <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis3$SPSmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped, data = cleancovid)
+  covid_SPS_tidy <- tidy(covid_SPS, conf.int=TRUE)
+  print(covid_SPS_tidy)  
+```
+
+
+```{r adj-R2-values}
+PSSadjR2 <- glance(covid_PSS)$adj.r.squared
+SLONadjR2 <- glance(covid_SLON)$adj.r.squared
+SPSadjR2 <- glance(covid_SPS)$adj.r.squared
+```
+
+```{r interaction-models}
+#marital status and isolation
+maritalstatus_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis$PSSmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_maritalstatus*Dem_isolation, data = cleancovid)
+  maritalstatus_isolation_interaction_tidy <- tidy(maritalstatus_isolation_interaction, conf.int=TRUE)
+  print(maritalstatus_isolation_interaction_tidy)
+  maritalstatus_isolation_R2 <- glance(maritalstatus_isolation_interaction)$adj.r.squared
+  print(maritalstatus_isolation_R2)
+```
+
+```{r interaction-models2}
+#age and isolation 
+ age_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis$PSSmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_age*Dem_isolation, data = cleancovid)
+  age_isolation_interaction_tidy <- tidy(age_isolation_interaction, conf.int=TRUE)
+  print(age_isolation_interaction_tidy)
+  age_isolation_R2 <- glance(age_isolation_interaction)$adj.r.squared 
+  print(age_isolation_R2)
+```
+
+```{r interaction-models3}
+#gender and isolation 
+ gender_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis$PSSmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_gender*Dem_isolation, data = cleancovid)
+  gender_isolation_interaction_tidy <- tidy(gender_isolation_interaction, conf.int=TRUE)
+  print(gender_isolation_interaction_tidy)
+  gender_isolation_R2 <- glance(gender_isolation_interaction)$adj.r.squared 
+  print(gender_isolation_R2)
+```
+
+```{r interaction-models4}
+#dependents and isolation 
+ dependents_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis$PSSmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_dependents*Dem_isolation, data = cleancovid)
+  dependents_isolation_interaction_tidy <- tidy(dependents_isolation_interaction, conf.int=TRUE)
+  print(dependents_isolation_interaction_tidy)
+  dependents_isolation_R2 <- glance(dependents_isolation_interaction)$adj.r.squared 
+  print(dependents_isolation_R2)
+```
+
+
+```{r interaction-models5}
+#employment and isolation 
+ employment_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(covidforanalysis$PSSmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_employment*Dem_isolation, data = cleancovid)
+  employment_isolation_interaction_tidy <- tidy(employment_isolation_interaction, conf.int=TRUE)
+  print(employment_isolation_interaction_tidy)
+  employment_isolation_R2 <- glance(employment_isolation_interaction)$adj.r.squared 
+  print(employment_isolation_R2)
+```
+```
+
+
+
