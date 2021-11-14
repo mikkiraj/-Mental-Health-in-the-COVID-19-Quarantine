@@ -290,21 +290,24 @@ genderSPSttest <- t.test(covidforanalysis3$SPSmeans~cleancovid$Dem_gender, var.e
 
 ```{r anova-isolation}
 anovaPSSisolation <- summary(aov(covidforanalysis$PSSmeans~cleancovid$Dem_isolation))
-anovaSlONisolation <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_isolation))
+anovaSLONisolation <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_isolation))
 anovaSPSisolation <- summary(aov(covidforanalysis3$SPSmeans~cleancovid$Dem_isolation))
 ```
 
 ```{r anova-marital}
 anovaPSSmarital <- summary(aov(covidforanalysis$PSSmeans~cleancovid$Dem_maritalstatus))
-anovaSlONmarital <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_maritalstatus))
+anovaSLONmarital <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_maritalstatus))
 anovaSPSmarital <- summary(aov(covidforanalysis3$SPSmeans~cleancovid$Dem_maritalstatus))
 ```
 
 ```{r anova-employment}
 anovaPSSemploy <- summary(aov(covidforanalysis$PSSmeans~cleancovid$Dem_employment))
-anovaSlONemploy <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_employment))
+anovaSLONemploy <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_employment))
 anovaSPSemploy <- summary(aov(covidforanalysis3$SPSmeans~cleancovid$Dem_employment))
 ```
 
-
-
+```{r anova-dependents}
+anovaPSSdepend <- summary(aov(covidforanalysis$PSSmeans~cleancovid$Dem_dependentsgrouped))
+anovaSLONdepend <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_dependentsgrouped))
+anovaSPSdepend <- summary(aov(covidforanalysis3$SPSmeans~cleancovid$Dem_dependentsgrouped))
+```
