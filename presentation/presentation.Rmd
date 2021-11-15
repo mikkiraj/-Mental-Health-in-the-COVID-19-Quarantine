@@ -1,6 +1,6 @@
 ---
 title: "Mental Health in the COVID-19 Quarantine"
-author: "Statistical Power Puffs: Michelle Huang, Bhavika Garg, Mihika Rajvanshi"
+author: "The Statista-Girls: Michelle Huang, Bhavika Garg, Mihika Rajvanshi"
 institute: "Duke University"
 date: "`r Sys.Date()`"
 output:
@@ -40,19 +40,24 @@ knitr::opts_chunk$set(
 ```
 
 ```{r load-data, include=FALSE, echo = FALSE, cache = TRUE}
-covid1=read_excel("../data/COVIDiSTRESS_May30_First.xlsx", sheet= 1)
-covid2=read_excel("../data/COVIDiSTRESS_May30_Second.xlsx", sheet= 1)
-covid3=read_excel("../data/COVIDiSTRESS_May 30_Third.xlsx", sheet= 1)
-covid4=read_excel("../data/COVIDiSTRESS_May 30_Fourth.xlsx", sheet= 1)
-covid5=read_excel("../data/COVIDiSTRESS_May 30_Fifth.xlsx", sheet= 1)
+# covid1=read_excel("../data/COVIDiSTRESS_May30_First.xlsx", sheet= 1)
+# covid2=read_excel("../data/COVIDiSTRESS_May30_Second.xlsx", sheet= 1)
+# covid3=read_excel("../data/COVIDiSTRESS_May 30_Third.xlsx", sheet= 1)
+# covid4=read_excel("../data/COVIDiSTRESS_May 30_Fourth.xlsx", sheet= 1)
+# covid5=read_excel("../data/COVIDiSTRESS_May 30_Fifth.xlsx", sheet= 1)
 ```
 
+```{r join-data2, message = FALSE, warning = FALSE, echo = FALSE, cache = TRUE}
+# covidstressdata <-covid1 %>%
+#   full_join(covid2) %>%
+#   full_join(covid3) %>%
+#   full_join(covid4) %>%
+#   full_join(covid5)
+```
+
+# Load Data
 ```{r join-data, message = FALSE, warning = FALSE, echo = FALSE, cache = TRUE}
-covidstressdata <-covid1 %>%
-  full_join(covid2) %>%
-  full_join(covid3) %>%
-  full_join(covid4) %>%
-  full_join(covid5)
+covidstressdata <- read_csv("../data/covidstressdata.csv")
 ```
 
 ```{r clean-data, message = FALSE, warning = FALSE, echo = FALSE, cache = TRUE }
@@ -68,7 +73,6 @@ style_xaringan(
 
 class: inverse, middle, center
 
-#Our stuff (Mikki's updates)
 
 ---
 
@@ -78,6 +82,8 @@ class: inverse, middle, center
 - The different measures of depression 
 
 ---
+
+## Research Question 
 
 ## Demographics Overview - Gender
 
@@ -118,6 +124,31 @@ cleancovid %>%
        fill = "Level of Isolation")
 ```
 
+## Depression Scales: PSS-10, SLON-3, SPS-15 
+
+## T-Test for Gender (Relationships and Table)
+
+## ANOVA Tests (Relationships and Table)
+
+## Logistic Regression: Age and PSS 
+
+## Logistic Regression: Age and SLON
+
+## Logistic Regression: Age and SPS 
+
+## Linear Regression Table + Equations 
+
+## Linear Regression Overall: PSS
+
+## Linear Regression Overall: SLON
+
+## Linear Regression Overall: SPS
+
+## Interaction Models 
+
+## Adjusted R2 Values Table 
+
+## 
 ---
 ## xaringan
 

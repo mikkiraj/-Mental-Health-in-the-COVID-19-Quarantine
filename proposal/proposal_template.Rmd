@@ -568,11 +568,27 @@ maritalstatus_isolation_interaction <- linear_reg() %>%
 #SPS: marital and isolation 
   SPS_marital_isolation_interaction <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(covidforanalysis3$SPSmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_maritalstatus*Dem_isolation, data = cleancovid)
+  fit(log(covidforanalysis3)$SPSmeans~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_maritalstatus*Dem_isolation, data = cleancovid)
   SPS_employment_isolation_interaction_tidy <- tidy(SPS_employment_isolation_interaction, conf.int=TRUE)
   print(SPS_employment_isolation_interaction_tidy)
   SPS_employment_isolation_R2 <- glance(SPS_employment_isolation_interaction)$adj.r.squared
   print(SPS_employment_isolation_R2)
+```
+
+```{r}
+covidforanalysis3%>%
+  ggplot(aes(x = scale(SPSmeans))) + 
+  geom_histogram()
+```
+
+```{r augmented}
+augmented_model <- augment(SPS_marital_isolation_interaction$fit)
+
+ggplot(augmented_model, mapping = aes(x = .fitted, y = .resid)) + 
+geom_point(alpha = 0.5)+
+geom_hline(yintercept=0, color = "blue")+
+labs(title = "Residuals vs Predicted Log Hair Mercury", 
+x = "Square Root of Hair Mercury", y = "Residuals")  
 ```
 
 ```{r R^2-table}
