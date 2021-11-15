@@ -48,7 +48,6 @@ filter(Dem_gender %in% c("Male", "Female"), answered_all == "Yes", Dem_isolation
 mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf)))
 
 glimpsecovid <- subset (covidstressdata, select = -c(Dem_maritalstatus:Scale_UCLA_TRI_avg))  #condensed for proposal
-glimpse(glimpsecovid)
 ```
 
 # Data Analysis Plan
@@ -271,6 +270,15 @@ genderSLONttest <- t.test(covidforanalysis2$SLONmeans~cleancovid$Dem_gender, var
 genderSPSttest <- t.test(covidforanalysis3$SPSmeans~cleancovid$Dem_gender, var.equal=FALSE)
 ```
 
+```{r ttest-table}
+ttesttab <- matrix(c(1.75*10^-309,1.16*10^-135, 1.98*10^-278, 0.114, 0.221, 0.3, 0.16, 0.259, 0.335), ncol=3, byrow=TRUE)
+colnames(ttesttab) <- c('PSS','SLON','SPS')
+rownames(ttesttab) <- c('P values', 'Confidence Intervals Low', 'Confidence Intervals High')
+tttesttab <- as.table(ttesttab)
+knitr::kable(ttesttab,digits=10,caption="T-Test Results for Gender and PSS, SLON, and SPS Scales") #when we knit, see if the title shows up 
+print(ttesttab)
+```
+
 
 ```{r anova-isolation}
 anovaPSSisolation <- summary(aov(covidforanalysis$PSSmeans~cleancovid$Dem_isolation))
@@ -296,12 +304,25 @@ anovaSLONdepend <-summary(aov(covidforanalysis2$SLONmeans~cleancovid$Dem_depende
 anovaSPSdepend <- summary(aov(covidforanalysis3$SPSmeans~cleancovid$Dem_dependentsgrouped))
 ```
 
+```{r anova-table}
+anovatab <- matrix(c(0, 0, 0, 
+                     1.22*10^-10, 1.48*10^-298, 0, 
+                     3.52*10^-135, 6.02*10^-160, 2.14*10^-123, 
+                     8.79*10^-21, 4.12*10^-63, 6.11*10^-27), ncol=3, byrow=TRUE) 
+colnames(anovatab) <- c('PSS','SLON','SPS')
+rownames(anovatab) <- c('Isolation Status', 'Marital Status', 'Employment', 'Dependents')
+anovatab <- as.table(anovatab)
+knitr::kable(anovatab,digits=10,caption="P Values for ANOVA Results") #when we knit, see if the title shows up 
+print(anovatab)
+```
+
+
 ```{r lin-reg-age}
 covid_PSSage <- linear_reg() %>%
   set_engine("lm") %>%
   fit(covidforanalysis$PSSmeans~cleancovid$Dem_age, data = cleancovid)
   covid_PSSage_tidy <- tidy(covid_PSSage, conf.int=TRUE)
-  print( covid_PSSage_tidy)
+  print(covid_PSSage_tidy)
   
 covid_SLONage <- linear_reg() %>%
   set_engine("lm") %>%
@@ -315,6 +336,32 @@ covid_SPSage <- linear_reg() %>%
   covid_SPSage_tidy <- tidy(covid_SPSage, conf.int = TRUE)
   print(covid_SPSage_tidy)
 ```
+
+```{r lin-reg-table}
+lin_reg_table <- matrix(c(-0.0047, -0.0128, -0.0008,
+                          7.41*10^-267, 0, 0.0045, 
+                          -0.0049,-0.0135, -0.0014
+                          -0.0044, -0.0122, -0.0003), 
+                          ncol=3, byrow=TRUE)
+colnames(lin_reg_table) <- c('PSS','SLON','SPS')
+rownames(lin_reg_table) <- c('Estimate', 'P values', 'Confidence Intervals Low', 'Confidence Intervals High')
+lin_reg_table <- as.table(lin_reg_table)
+knitr::kable(lin_reg_table,digits=10,caption="Linear Regression Results for Age and PSS, SLON, and SPS Scales") #when we knit, see if the title shows up 
+print(lin_reg_table)
+```
+
+```{r lin-reg-equations-table}
+lin_reg_equations_table <- matrix(c('y_expected = 3.1628 - 0.00465(age)', 
+                                    'y_expected = 3.0734 - 0.01281(age)', 
+                                    'y_expected = 4.9504 - 0.000805(age)'),  
+                          ncol=3, byrow=TRUE)
+colnames(lin_reg_equations_table) <- c('PSS','SLON','SPS')
+rownames(lin_reg_equations_table) <- c('Equation')
+lin_reg_equations_table <- as.table(lin_reg_equations_table)
+knitr::kable(lin_reg_equations_table,digits=10,caption="Linear Regression Results for Age and PSS, SLON, and SPS Scales") #when we knit, see if the title shows up 
+print(lin_reg_equations_table)
+```
+
 
 ```{r plot-lin-reg-age}
 #PSSmeans
@@ -384,12 +431,12 @@ covid_SPS <- linear_reg() %>%
 
 
 ```{r adj-R2-values}
-PSSadjR2 <- glance(covid_PSS)$adj.r.squared
-SLONadjR2 <- glance(covid_SLON)$adj.r.squared
-SPSadjR2 <- glance(covid_SPS)$adj.r.squared
+PSS_R2 <- glance(covid_PSS)$adj.r.squared
+SLON_R2 <- glance(covid_SLON)$adj.r.squared
+SPS_R2 <- glance(covid_SPS)$adj.r.squared
 ```
 
-```{r interaction-models}
+```{r interaction-models1}
 #PSS: marital status and isolation
 maritalstatus_isolation_interaction <- linear_reg() %>%
   set_engine("lm") %>%
@@ -527,3 +574,15 @@ maritalstatus_isolation_interaction <- linear_reg() %>%
   SPS_employment_isolation_R2 <- glance(SPS_employment_isolation_interaction)$adj.r.squared
   print(SPS_employment_isolation_R2)
 ```
+
+```{r R^2-table}
+# <- matrix(c(), 
+                          #ncol=3, byrow=TRUE)
+#colnames(R2_table) <- c('Adjusted R^2 Value')
+#rownames(R2_table) <- c('PSS:Age+Gender', 'PSS:Employment+Isolation', 'PSS:Marital+Isolation', 'PSS:Age+Isolation', 'PSS:Gender+Isolation', 'PSS:Dependents+Isolation', 'SLON:Age+Gender', 'SLON:Employment+Isolation', 'SLON:Marital+Isolation', 'SPS:Age+Gender', 'SPS:Employment+Isolation', 'SPS:Marital+Isolation')
+#R2_table <- as.table(R2_table)
+#knitr::kable(R2_table,digits=10,caption="Adjusted R^2 Values for PSS, SLON, and SPS Scales") #when we knit, see if the title shows up 
+#print(R2_table)
+```
+
+
