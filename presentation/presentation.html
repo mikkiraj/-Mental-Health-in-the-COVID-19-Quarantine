@@ -4,7 +4,7 @@
     <title>Mental Health in the COVID-19 Quarantine</title>
     <meta charset="utf-8" />
     <meta name="author" content="The Statista-Girls: Michelle Huang, Bhavika Garg, Mihika Rajvanshi" />
-    <meta name="date" content="2021-11-15" />
+    <meta name="date" content="2021-11-16" />
     <script src="libs/header-attrs-2.11/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Mental Health in the COVID-19 Quarantine
 ### The Statista-Girls: Michelle Huang, Bhavika Garg, Mihika Rajvanshi
 ### Duke University
-### 2021-11-15
+### 2021-11-16
 
 ---
 
@@ -24,11 +24,6 @@ class: center, middle, inverse, title-slide
 
 
 
-
-
-
-
-# Load Data
 
 
 
@@ -43,51 +38,302 @@ class: inverse, middle, center
 
 ## Data Overview
 
-- Talk about intro here 
-- The different measures of depression 
-
+- COVIDiSTRESS Global Survey (125,000 observations and 152 columns)
+- Focused on six explanatory variables: age, gender, level of isolation, marital status, employment status, and number of dependents
+- Used the PSS-10 (Perceived Stress Scale) and SLON-3 (Short Self-Report Scale of Social Loneliness) as approximate quantitative measure of mental health 
 ---
 
 ## Research Question 
-
-## Demographics Overview - Gender
-
-&lt;img src="presentation_files/figure-html/visual-1-1.png" width="70%" /&gt;
+ - How do age, gender, level of isolation, marital status, number of dependents, and employment affect global mental health outcomes during COVID-19? 
+ - Examined t test and ANOVA tests to determine significance of each explanatory variable
+ - Attempted to create models to predict how the explanatory variables can model predicted PSS-10 and SLON-3 values
+ 
 ---
 
-## Demographics Overview - Age
+## PSS-10 and SLON-3 Distribution
 
-
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-&lt;img src="presentation_files/figure-html/visual-2-1.png" width="70%" /&gt;
+-- add histogram graphs (michelle)
 
 ---
+## Demographics Overviews
 
-## Demographics Overview - Isolation Levels
-&lt;img src="presentation_files/figure-html/visual-3-1.png" width="70%" /&gt;
+-- insert all graphs here  (michelle)
 
-## Depression Scales: PSS-10, SLON-3, SPS-15 
+---
 
 ## T-Test for Gender (Relationships and Table)
 
+
+&lt;table&gt;
+&lt;caption&gt;T-Test Results for Gender with PSS and SLON Scales&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PSS &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; SLON &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P values &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Confidence Intervals Low &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.211 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.221 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Confidence Intervals High &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.239 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.259 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
 ## ANOVA Tests (Relationships and Table)
 
-## Logistic Regression: Age and PSS 
 
-## Logistic Regression: Age and SLON
 
-## Logistic Regression: Age and SPS 
+&lt;table&gt;
+&lt;caption&gt;P Values for ANOVA Results&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PSS &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; SLON &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Isolation Status &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Marital Status &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Employment &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dependents &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
-## Linear Regression Table + Equations 
+
+&lt;table&gt;
+&lt;caption&gt;F Values for ANOVA Results&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PSS &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; SLON &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Isolation Status &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1547.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1398.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Marital Status &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 695.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Employment &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 128.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 151.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dependents &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60.5 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Linear Regression: Age versus PSS10 and SLON3
+
+
+&lt;table&gt;
+&lt;caption&gt;Linear Regression Results for Age with PSS and SLON Scales&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; PSS &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; SLON &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Estimate &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.013 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; P values &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Confidence Intervals Low &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.047 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Confidence Intervals High &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.099 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+michelle: add lin reg graphs
+
+---
+
+#Main Effects Model
+
+
+
+
+
+&lt;table&gt;
+&lt;caption&gt;Main Effect Models: Adjusted R^2 Values for PSS and SLON&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Adjusted R^2 Value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PSS &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1044 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SLON &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1028 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```r
+graph8 + graph9
+```
+
+&lt;img src="presentation_files/figure-html/sizingplots-4-1.png" width="70%" /&gt;
+
+```r
+  plot_layout(ncol = 2)
+```
+
+```
+## $ncol
+## [1] 2
+## 
+## $nrow
+## NULL
+## 
+## $byrow
+## NULL
+## 
+## $widths
+## NULL
+## 
+## $heights
+## NULL
+## 
+## $guides
+## NULL
+## 
+## $tag_level
+## NULL
+## 
+## $design
+## NULL
+## 
+## attr(,"class")
+## [1] "plot_layout"
+```
+
+
+
+
+
+
+
+Table: Interaction Models: Adjusted R^2 Values for PSS and SLON
+
+|                           | Adjusted R^2 Value|
+|:--------------------------|------------------:|
+|PSS: Age+Gender            |             0.1303|
+|PSS: Employment+Isolation  |             0.1250|
+|PSS: Marital+Isolation     |             0.1231|
+|PSS: Age+Isolation         |             0.1256|
+|PSS: Gender+Isolation      |             0.1250|
+|PSS: Dependents+Isolation  |             0.1230|
+|SLON: Age+Gender           |             0.1044|
+|SLON: Employment+Isolation |             0.1040|
+|SLON: Marital+Isolation    |             0.1032|
+
+```
+##                            Adjusted R^2 Value
+## PSS: Age+Gender                        0.1303
+## PSS: Employment+Isolation              0.1250
+## PSS: Marital+Isolation                 0.1231
+## PSS: Age+Isolation                     0.1256
+## PSS: Gender+Isolation                  0.1250
+## PSS: Dependents+Isolation              0.1230
+## SLON: Age+Gender                       0.1044
+## SLON: Employment+Isolation             0.1040
+## SLON: Marital+Isolation                0.1032
+```
 
 ## Linear Regression Overall: PSS
-
-## Linear Regression Overall: SLON
-
-## Linear Regression Overall: SPS
 
 ## Interaction Models 
 
