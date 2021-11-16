@@ -1,7 +1,424 @@
 ---
 title: "Final Report"
-subtitle: "due November 16, 2021 by 11:59 PM "
-author: "Your names and team name here"
-date: ""
+subtitle: "due October 11, 2021 by 11:59 PM "
+author: "Mihika Rajvanshi, Bhavika Garg, Michelle Huang"
+date: "10/11/2021"
 output: pdf_document
 ---
+
+# Load Packages
+
+```{r load-packages, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(tidymodels)
+library(infer)
+library(readxl)
+library(skimr)
+library(dplyr)
+library(patchwork)
+``` 
+
+# Load Data
+```{r join-data, message = FALSE, warning = FALSE, echo = FALSE, cache = TRUE}
+covidstressdata <- read_csv("../data/covidstressdata.csv")
+```
+
+```{r glimpse}
+cleancovid <- subset (covidstressdata, select = -c(AD_gain, AD_loss, RecordedDate, Duration..in.seconds., UserLanguage, Dem_edu_mom, Dem_Expat, Dem_state, Dem_riskgroup, AD_check, Trust_countrymeasure))%>%
+  #removed because of laTex incompatible but will use this for analysis 
+  
+filter(Dem_gender %in% c("Male", "Female"), answered_all == "Yes", Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual"), Dem_maritalstatus %in% c("Single", "Divorced/widowed", "Married/cohabiting"), Dem_employment %in% c("Not employed", "Retired", "Full time employed", "Student", "Part time employed", "Self-employed"), Dem_dependents %in%c (0, 1, 2, 3, 4, 5, 6, 7, 8, 9), !is.na(PSS10_avg), !is.na(SLON3_avg)) %>%
+
+mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf)))
+```
+
+```{r visual-1, warning=FALSE, echo=FALSE}
+  graph1 <- ggplot(data = cleancovid, aes(x = Dem_gender))+ 
+  geom_bar(fill = "orange") +
+  labs(title= "Gender Distributions", 
+       x= "Gender", 
+       y= "Individuals") +
+  theme(axis.text.x = element_text(angle=30, hjust =1))
+```
+
+```{r visual-2, warning=FALSE, echo=FALSE}
+ graph2 <- ggplot(data = cleancovid, aes(x = Dem_age)) + 
+  geom_histogram(fill = "pink") + 
+  labs(title= "Age Distributions", 
+       x = "Age",
+       y = "Individuals")+
+  theme(axis.text.x = element_text(angle=30, hjust =1))
+```
+
+
+```{r visual-3, warning=FALSE, echo=FALSE}
+  graph3 <- ggplot(data = cleancovid, aes(x = Dem_isolation)) + 
+  geom_bar(fill = "purple") + 
+  labs(title= "Levels of Isolation", 
+       x= "Isolation Level", 
+       y= "Individuals")+
+  theme(axis.text.x = element_text(angle=30, hjust =1))
+```
+
+```{r visual-4, warning=FALSE, echo=FALSE}
+ graph12 <- ggplot(data = cleancovid, aes(x = Dem_maritalstatus), 
+             fill = Dem_maritalstatus) + 
+  geom_bar(fill = "red") + 
+  labs(title= "Different Marital Statuses", 
+       x= "Marital Status", 
+       y= "Individuals")+
+  theme(axis.text.x = element_text(angle=30, hjust =1))
+```
+
+```{r visual-5, warning=FALSE, echo=FALSE}
+  graph13 <- ggplot(data = cleancovid, aes(x = Dem_employment), 
+             fill = Dem_employment) + 
+  geom_bar(fill = "green") + 
+  labs(title= "Different Employment Statuses", 
+       x= "Employment Status", 
+       y= "Individuals")+
+  theme(axis.text.x = element_text(angle=30, hjust =1))
+```
+
+```{r visual-6, warning=FALSE, echo=FALSE}
+  graph14 <- ggplot(data = cleancovid, aes(x = Dem_dependentsgrouped), 
+             fill = Dem_dependentsgrouped) + 
+  geom_bar(fill = "blue") + 
+  labs(title= "Number of Dependents", 
+       x= "Grouped Dependents", 
+       y= "Individuals")+
+  theme(axis.text.x = element_text(angle=30, hjust =1))
+```
+
+```{r sizingplots, echo=FALSE, fig.height = 3}
+graph1 + graph2
+graph3 + graph12
+graph13 + graph14
+```
+
+
+```{r histograms, echo=FALSE}
+ graph4 <- ggplot(data = cleancovid, aes(x =PSS10_avg)) + 
+  geom_histogram()+
+  labs(title = "Distribution of PSS Averages", 
+       x = "PSS Averages", 
+       y = "Count")
+```
+
+
+```{r histograms-2, echo=FALSE}
+  graph5 <- ggplot(data = cleancovid, aes(x = SLON3_avg)) + 
+  geom_histogram()+
+  labs(title = "Distribution of SLON Averages", 
+       x = "SLON Averages", 
+       y = "Count")
+```
+
+```{r sizingplots-2, echo=FALSE}
+graph4 + graph5 
+```
+
+```{r ttest-gender, echo=FALSE}
+genderPSSttest <- t.test(PSS10_avg~Dem_gender, data= cleancovid, var.equal=FALSE)
+genderSLONttest <- t.test(SLON3_avg~Dem_gender, data= cleancovid, var.equal =FALSE)
+```
+
+```{r ttest-table, echo=FALSE}
+ttesttab <- matrix(c(2.23*10^-219, 1.16*10^-135, 
+                     0.211, 0.221,
+                     0.239, 0.259), 
+                    ncol=2, byrow=TRUE)
+colnames(ttesttab) <- c('PSS','SLON')
+rownames(ttesttab) <- c('P values', 'Confidence Intervals Low', 'Confidence Intervals High')
+tttesttab <- as.table(ttesttab)
+knitr::kable(ttesttab,digits=10,caption="T-Test Results for Gender with PSS and SLON Scales")
+```
+
+
+```{r anova-isolation, echo=FALSE}
+anovaPSSisolation <- summary(aov(cleancovid$PSS10_avg~cleancovid$Dem_isolation))
+anovaSLONisolation <-summary(aov(cleancovid$SLON3_avg~cleancovid$Dem_isolation))
+```
+
+```{r anova-marital, echo=FALSE}
+anovaPSSmarital <- summary(aov(cleancovid$PSS10_avg~cleancovid$Dem_maritalstatus))
+anovaSLONmarital <-summary(aov(cleancovid$SLON3_avg~cleancovid$Dem_maritalstatus))
+```
+
+```{r anova-employment, echo=FALSE}
+anovaPSSemploy <- summary(aov(cleancovid$PSS10_avg~cleancovid$Dem_employment))
+anovaSLONemploy <-summary(aov(cleancovid$SLON3_avg~cleancovid$Dem_employment))
+```
+
+```{r anova-dependents, echo=FALSE}
+anovaPSSdepend <- summary(aov(cleancovid$PSS10_avg~cleancovid$Dem_dependentsgrouped))
+anovaSLONdepend <-summary(aov(cleancovid$SLON3_avg~cleancovid$Dem_dependentsgrouped))
+```
+
+```{r anova-table, echo=FALSE}
+anovatab <- matrix(c(0, 0, 
+                     1.93*10^-258, 1.45*10^-298,
+                     0, 6.02*10^-160, 
+                     1.33*10^-16, 4.12*10^-63), 
+                   ncol=2, byrow=TRUE) 
+colnames(anovatab) <- c('PSS','SLON')
+rownames(anovatab) <- c('Isolation Status', 'Marital Status', 'Employment', 'Dependents')
+anovatab <- as.table(anovatab)
+knitr::kable(anovatab,digits=10,caption="P Values for ANOVA Results")
+```
+
+```{r anova-table-Fvalues, echo=FALSE}
+anovatab_Fvalues <- matrix(c(1547, 1398,
+                             22.8, 695, 
+                             128, 151, 
+                             20.8, 60.5), 
+                   ncol=2, byrow=TRUE) 
+colnames(anovatab_Fvalues) <- c('PSS','SLON')
+rownames(anovatab_Fvalues) <- c('Isolation Status', 'Marital Status', 'Employment', 'Dependents')
+anovatab_Fvalues <- as.table(anovatab_Fvalues)
+knitr::kable(anovatab_Fvalues,digits=10,caption="F Values for ANOVA Results")
+```
+
+
+```{r lin-reg-age, echo=FALSE}
+covid_PSSage <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(PSS10_avg~Dem_age, data = cleancovid)
+  covid_PSSage_tidy <- tidy(covid_PSSage, conf.int=TRUE)
+  
+covid_SLONage <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(SLON3_avg~Dem_age, data = cleancovid)
+  covid_SLONage_tidy <- tidy(covid_SLONage, conf.int = TRUE)
+```
+
+```{r lin-reg-table, echo=FALSE}
+lin_reg_table <- matrix(c(-0.014, -0.013,
+                          0, 0, 
+                          3.145, 3.047,
+                          3.183, 3.099), 
+                          ncol=2, byrow=TRUE)
+colnames(lin_reg_table) <- c('PSS','SLON')
+rownames(lin_reg_table) <- c('Estimate', 'P values', 'Confidence Intervals Low', 'Confidence Intervals High')
+lin_reg_table <- as.table(lin_reg_table)
+knitr::kable(lin_reg_table,digits=10,caption="Linear Regression Results for Age with PSS and SLON Scales") 
+```
+
+```{r lin-reg-equations-table, echo=FALSE}
+lin_reg_equations_table <- matrix(c('y_expected = 3.164 - 0.014(age)', 
+                                    'y_expected = 3.073 - 0.013(age)' 
+                                    ),  
+                          ncol=2, byrow=TRUE)
+colnames(lin_reg_equations_table) <- c('PSS','SLON')
+rownames(lin_reg_equations_table) <- c('Equation')
+lin_reg_equations_table <- as.table(lin_reg_equations_table)
+knitr::kable(lin_reg_equations_table,digits=10,caption="Linear Regression Results for Age with PSS and SLON Scales")
+```
+
+```{r plot-lin-reg-age, echo=FALSE}
+#PSSmeans
+graph6 <- ggplot(data = cleancovid, 
+       aes(x = Dem_age, 
+           y = PSS10_avg)) +
+  geom_point(alpha=.5) +
+  geom_smooth(method = "lm",
+              se = FALSE, 
+              color = "pink") +
+  labs(
+    title = "PSS means and Age",
+    x = "Age",
+    y = "PSS means"
+      )
+
+#SLONmeans
+graph7 <- ggplot(data = cleancovid, 
+       aes(x = Dem_age, 
+           y = SLON3_avg)) +
+  geom_point(alpha=.5) +
+  geom_smooth(method = "lm",
+              se = FALSE, 
+              color = "blue") +
+  labs(
+    title = "SLON means and Age",
+    x = "Age",
+    y = "SLON means"
+      )
+```
+
+```{r sizingplots-3, echo=FALSE, fig.height = 3}
+graph6
+graph7 
+```
+
+
+```{r lin-reg-overall, echo=FALSE}
+covid_PSS <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped, data = cleancovid)
+  covid_PSS_tidy <- tidy(covid_PSS, conf.int=TRUE)
+  
+covid_SLON <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(SLON3_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped, data = cleancovid)
+  covid_SLON_tidy <- tidy(covid_SLON, conf.int=TRUE)
+```
+
+```{r adj-R2-values, echo=FALSE}
+PSS_R2 <- glance(covid_PSS)$adj.r.squared
+SLON_R2 <- glance(covid_SLON)$adj.r.squared
+```
+
+```{r adj-R2-values-maineffect-table, echo=FALSE}
+maineffect_adjustedR2table <- matrix(c(0.1044, 0.1028), 
+                        ncol=1, byrow=TRUE)
+colnames(maineffect_adjustedR2table) <- c('Adjusted R^2 Value')
+rownames(maineffect_adjustedR2table) <- c('PSS', 'SLON')
+maineffect_adjustedR2table <- as.table(maineffect_adjustedR2table)
+knitr::kable(maineffect_adjustedR2table,digits=10,caption="Main Effect Models: Adjusted R^2 Values for PSS and SLON") 
+```
+
+
+```{r interaction-models1, echo=FALSE}
+#PSS: marital status and isolation
+PSS_maritalstatus_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_maritalstatus*Dem_isolation, data = cleancovid)
+  PSS_maritalstatus_isolation_interaction_tidy <- tidy(PSS_maritalstatus_isolation_interaction, conf.int=TRUE)
+  PSS_maritalstatus_isolation_R2 <- glance(PSS_maritalstatus_isolation_interaction)$adj.r.squared
+```
+
+```{r interaction-models2, echo=FALSE}
+#PSS: age and isolation 
+ PSS_age_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_age*Dem_isolation, data = cleancovid)
+  PSS_age_isolation_interaction_tidy <- tidy(PSS_age_isolation_interaction, conf.int=TRUE)
+  PSS_age_isolation_R2 <- glance(PSS_age_isolation_interaction)$adj.r.squared 
+```
+
+```{r interaction-models3, echo=FALSE}
+#PSS: gender and isolation 
+ PSS_gender_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_gender*Dem_isolation, data = cleancovid)
+  PSS_gender_isolation_interaction_tidy <- tidy(PSS_gender_isolation_interaction, conf.int=TRUE)
+  PSS_gender_isolation_R2 <- glance(PSS_gender_isolation_interaction)$adj.r.squared 
+```
+
+```{r interaction-models4, echo=FALSE}
+#PSS: dependents and isolation 
+ PSS_dependents_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_dependentsgrouped*Dem_isolation, data = cleancovid)
+  PSS_dependents_isolation_interaction_tidy <- tidy(PSS_dependents_isolation_interaction, conf.int=TRUE)
+  PSS_dependents_isolation_R2 <- glance(PSS_dependents_isolation_interaction)$adj.r.squared 
+```
+
+```{r interaction-models5, echo=FALSE}
+#PSS: employment and isolation 
+ PSS_employment_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_employment*Dem_isolation, data = cleancovid)
+  PSS_employment_isolation_interaction_tidy <- tidy(PSS_employment_isolation_interaction, conf.int=TRUE)
+  PSS_employment_isolation_R2 <- glance(PSS_employment_isolation_interaction)$adj.r.squared
+```
+
+```{r interaction-models6, echo=FALSE}
+#PSS: age and gender
+  PSS_age_gender_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_age*Dem_gender, data = cleancovid)
+  PSS_age_gender_interaction_tidy <- tidy(PSS_age_gender_interaction, conf.int=TRUE)
+  PSS_age_gender_R2 <- glance(PSS_age_gender_interaction)$adj.r.squared 
+```
+
+```{r interaction-models7, echo=FALSE}
+#SLON: age and gender
+  SLON_age_gender_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(SLON3_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_age*Dem_gender, data = cleancovid)
+  SLON_age_gender_interaction_tidy <- tidy(SLON_age_gender_interaction, conf.int=TRUE)
+  SLON_age_gender_R2 <- glance(SLON_age_gender_interaction)$adj.r.squared 
+```
+
+```{r interaction-models8, echo=FALSE}
+#SLON: employment and isolation
+  SLON_employment_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(SLON3_avg ~ Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_employment*Dem_isolation, data = cleancovid)
+  SLON_employment_isolation_interaction_tidy <- tidy(SLON_employment_isolation_interaction, conf.int=TRUE)
+  SLON_employment_isolation_R2 <- glance(SLON_employment_isolation_interaction)$adj.r.squared 
+```
+
+```{r interaction-models9, echo=FALSE}
+#SLON: marital and isolation
+  SLON_marital_isolation_interaction <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(SLON3_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_maritalstatus*Dem_isolation, data = cleancovid)
+  SLON_marital_isolation_interaction_tidy <- tidy(SLON_marital_isolation_interaction, conf.int=TRUE)
+  SLON_marital_isolation_R2 <- glance(SLON_marital_isolation_interaction)$adj.r.squared 
+```
+
+```{r residualplot-PSSmaineffect, echo=FALSE}
+covid_PSS_aug <- augment(covid_PSS$fit)
+
+graph8 <- ggplot(covid_PSS_aug, mapping = aes(x = .fitted, y = .resid)) + 
+geom_point(alpha = 0.5)+
+geom_hline(yintercept=0, color = "blue")+
+labs(title = "Residual Plot of PSS Main Effect Model", 
+     x = "Fitted", 
+     y = "Residual")  
+```
+
+```{r residualplot-SLONmaineffect, echo=FALSE}
+covid_SLON_aug <- augment(covid_SLON$fit)
+
+graph9 <- ggplot(covid_SLON_aug, mapping = aes(x = .fitted, y = .resid)) + 
+geom_point(alpha = 0.5)+
+geom_hline(yintercept=0, color = "blue")+
+labs(title = "Residual Plot of SLON Main Effect Model", 
+     x = "Fitted", 
+     y = "Residual")
+```
+
+```{r sizingplots-4, echo=FALSE, fig.height = 3}
+graph8
+graph9
+```
+
+```{r residualplot-PSSagegender, echo=FALSE} 
+PSS_age_gender_interaction_aug <- augment(PSS_age_gender_interaction$fit)
+
+graph10 <- ggplot(PSS_age_gender_interaction_aug, mapping = aes(x = .fitted, y = .resid)) + 
+geom_point(alpha = 0.5)+
+geom_hline(yintercept=0, color = "blue")+
+labs(title = "Residual Plot of Interaction of PSS in Age and Gender", 
+     x = "Fitted", 
+     y = "Residual") 
+```
+
+```{r residualplot-SLONagegender, echo=FALSE}
+SLON_age_gender_interaction_aug <- augment(SLON_age_gender_interaction$fit)
+
+graph11 <- ggplot(SLON_age_gender_interaction_aug, mapping = aes(x = .fitted, y = .resid)) + 
+geom_point(alpha = 0.5)+
+geom_hline(yintercept=0, color = "blue")+
+labs(title = "Residual Plot of Interaction of SLON in Age and Gender", 
+     x = "Fitted", 
+     y = "Residual") 
+```
+
+
+```{r sizingplots-5, echo=FALSE, fig.height = 3}
+graph10
+graph11 
+```
+
+```{r aqdjustedR2-table, echo=FALSE}
+adjustedR2table <- matrix(c(0.1303, 0.1250, 0.1231, 0.1256, 0.1250, 0.1230, 0.1044, 0.1040, 0.1032), 
+                        ncol=1, byrow=TRUE)
+colnames(adjustedR2table) <- c('Adjusted R^2 Value')
+rownames(adjustedR2table) <- c('PSS: Age+Gender', 'PSS: Employment+Isolation', 'PSS: Marital+Isolation', 'PSS: Age+Isolation', 'PSS: Gender+Isolation', 'PSS: Dependents+Isolation', 'SLON: Age+Gender', 'SLON: Employment+Isolation', 'SLON: Marital+Isolation')
+adjustedR2table <- as.table(adjustedR2table)
+knitr::kable(adjustedR2table,digits=10,caption="Interaction Models: Adjusted R^2 Values for PSS and SLON") 
+```
