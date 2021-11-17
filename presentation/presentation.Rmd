@@ -66,20 +66,56 @@ class: inverse, middle, center
 ## Data Overview
 
 - COVIDiSTRESS Global Survey (125,000 observations and 152 columns)
+
 - Focused on six explanatory variables: age, gender, level of isolation, marital status, employment status, and number of dependents
+
 - Used the PSS-10 (Perceived Stress Scale) and SLON-3 (Short Self-Report Scale of Social Loneliness) as approximate quantitative measure of mental health 
 ---
 
 ## Research Question 
  - How do age, gender, level of isolation, marital status, number of dependents, and employment affect global mental health outcomes during COVID-19? 
+ 
  - Examined t test and ANOVA tests to determine significance of each explanatory variable
+ 
  - Attempted to create models to predict how the explanatory variables can model predicted PSS-10 and SLON-3 values
  
 ---
 
 ## PSS-10 and SLON-3 Distribution
 
--- add histogram graphs (michelle)
+```{r visual-1, warning=FALSE, echo=FALSE}
+  graph1 <- ggplot(data = cleancovid, aes(x = Dem_gender, 
+             fill = Dem_gender ))+ 
+  geom_bar() +
+  labs(title= "Gender Distributions", 
+       x= "Gender", 
+       y= "Individuals", 
+       fill = "Gender") 
+```
+
+
+```{r visual-2, warning=FALSE, echo=FALSE}
+ graph2 <- ggplot(data = cleancovid, aes(x = Dem_age)) + 
+  geom_histogram(fill = "pink") + 
+  labs(title= "Age Distributions", 
+       x = "Age",
+       y = "Individuals")
+```
+
+
+```{r visual-3, warning=FALSE, echo=FALSE}
+  graph3 <- ggplot(data = cleancovid, aes(x = Dem_isolation, 
+             fill = Dem_isolation)) + 
+  geom_bar() + 
+  labs(title= "Levels of Isolation", 
+       x= "Isolation Level", 
+       y= "Individuals", 
+       fill = "Level of Isolation")
+```
+
+```{r sizingplots}
+graph1 + graph2 + graph3 
+```
 
 ---
 ## Demographics Overviews
@@ -118,7 +154,8 @@ anovaSLONemploy <-summary(aov(cleancovid$SLON3_avg~cleancovid$Dem_employment))
 anovaPSSdepend <- summary(aov(cleancovid$PSS10_avg~cleancovid$Dem_dependentsgrouped))
 anovaSLONdepend <-summary(aov(cleancovid$SLON3_avg~cleancovid$Dem_dependentsgrouped))
 ```
-
+---
+#ANOVA Tests (F values)
 
 ```{r anova-ptable, echo=FALSE, warning = FALSE, fig.alt = "Table of P-values for ANOVA tests between explanatory and PSS10 and SlON3 showing that the mean PSS10 and SLON3 values are significantly different based on all explanatory variables"}
 anovatab <- matrix(c(0, 0, 
@@ -195,7 +232,7 @@ PSS_R2 <- glance(covid_PSS)$adj.r.squared
 SLON_R2 <- glance(covid_SLON)$adj.r.squared
 ```
 
-```{r adj-R2-values-maineffect-table, echo=FALSE}
+```{r adj-R2-values-maineffect-table, echo=FALSE, warning = FALSE}
 maineffect_adjustedR2table <- matrix(c(0.1044, 0.1028), 
                         ncol=1, byrow=TRUE)
 colnames(maineffect_adjustedR2table) <- c('Adjusted R^2 Value')
@@ -204,52 +241,7 @@ maineffect_adjustedR2table <- as.table(maineffect_adjustedR2table)
 knitr::kable(maineffect_adjustedR2table,digits=10,caption="Main Effect Models: Adjusted R^2 Values for PSS and SLON", format = "html") 
 ```
 
-
-```{r interaction-models1, echo=FALSE, warning = FALSE}
-#PSS: marital status and isolation
-PSS_maritalstatus_isolation_interaction <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_maritalstatus*Dem_isolation, data = cleancovid)
-  PSS_maritalstatus_isolation_interaction_tidy <- tidy(PSS_maritalstatus_isolation_interaction, conf.int=TRUE)
-  PSS_maritalstatus_isolation_R2 <- glance(PSS_maritalstatus_isolation_interaction)$adj.r.squared
-```
-
-```{r interaction-models2, echo=FALSE}
-#PSS: age and isolation 
- PSS_age_isolation_interaction <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_age*Dem_isolation, data = cleancovid)
-  PSS_age_isolation_interaction_tidy <- tidy(PSS_age_isolation_interaction, conf.int=TRUE)
-  PSS_age_isolation_R2 <- glance(PSS_age_isolation_interaction)$adj.r.squared 
-```
-
-```{r interaction-models3, echo=FALSE}
-#PSS: gender and isolation 
- PSS_gender_isolation_interaction <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_gender*Dem_isolation, data = cleancovid)
-  PSS_gender_isolation_interaction_tidy <- tidy(PSS_gender_isolation_interaction, conf.int=TRUE)
-  PSS_gender_isolation_R2 <- glance(PSS_gender_isolation_interaction)$adj.r.squared 
-```
-
-```{r interaction-models4, echo=FALSE}
-#PSS: dependents and isolation 
- PSS_dependents_isolation_interaction <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_dependentsgrouped*Dem_isolation, data = cleancovid)
-  PSS_dependents_isolation_interaction_tidy <- tidy(PSS_dependents_isolation_interaction, conf.int=TRUE)
-  PSS_dependents_isolation_R2 <- glance(PSS_dependents_isolation_interaction)$adj.r.squared 
-```
-
-
-```{r interaction-models5, echo=FALSE}
-#PSS: employment and isolation 
- PSS_employment_isolation_interaction <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_employment*Dem_isolation, data = cleancovid)
-  PSS_employment_isolation_interaction_tidy <- tidy(PSS_employment_isolation_interaction, conf.int=TRUE)
-  PSS_employment_isolation_R2 <- glance(PSS_employment_isolation_interaction)$adj.r.squared
-```
+---
 
 ```{r interaction-models6, echo=FALSE}
 #PSS: age and gender
@@ -260,9 +252,6 @@ PSS_maritalstatus_isolation_interaction <- linear_reg() %>%
   PSS_age_gender_R2 <- glance(PSS_age_gender_interaction)$adj.r.squared 
 ```
 
-
-
-
 ```{r interaction-models7, echo=FALSE}
 #SLON: age and gender
   SLON_age_gender_interaction <- linear_reg() %>%
@@ -272,25 +261,7 @@ PSS_maritalstatus_isolation_interaction <- linear_reg() %>%
   SLON_age_gender_R2 <- glance(SLON_age_gender_interaction)$adj.r.squared 
 ```
 
-
-```{r interaction-models8, echo=FALSE}
-#SLON: employment and isolation
-  SLON_employment_isolation_interaction <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(SLON3_avg ~ Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_employment*Dem_isolation, data = cleancovid)
-  SLON_employment_isolation_interaction_tidy <- tidy(SLON_employment_isolation_interaction, conf.int=TRUE)
-  SLON_employment_isolation_R2 <- glance(SLON_employment_isolation_interaction)$adj.r.squared 
-```
-
-```{r interaction-models9, echo=FALSE}
-#SLON: marital and isolation
-  SLON_marital_isolation_interaction <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(SLON3_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped + Dem_maritalstatus*Dem_isolation, data = cleancovid)
-  SLON_marital_isolation_interaction_tidy <- tidy(SLON_marital_isolation_interaction, conf.int=TRUE)
-  SLON_marital_isolation_R2 <- glance(SLON_marital_isolation_interaction)$adj.r.squared 
-```
-
+---
 
 ```{r residualplot-PSSmaineffect, echo=FALSE}
 covid_PSS_aug <- augment(covid_PSS$fit)
