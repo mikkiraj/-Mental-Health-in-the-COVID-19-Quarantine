@@ -40,49 +40,49 @@ class: inverse, middle, center
 
 - COVIDiSTRESS Global Survey (125,000 observations and 152 columns)
 
+
 - Focused on six explanatory variables: age, gender, level of isolation, marital status, employment status, and number of dependents
 
+
 - Used the PSS-10 (Perceived Stress Scale) and SLON-3 (Short Self-Report Scale of Social Loneliness) as approximate quantitative measure of mental health 
+
 ---
 
 ## Research Question 
  - How do age, gender, level of isolation, marital status, number of dependents, and employment affect global mental health outcomes during COVID-19? 
  
+ 
  - Examined t test and ANOVA tests to determine significance of each explanatory variable
+ 
  
  - Attempted to create models to predict how the explanatory variables can model predicted PSS-10 and SLON-3 values
  
 ---
 
-## PSS-10 and SLON-3 Distribution
+##Demographics Data: Gender
 
-
-
-
-
-
-
-
-
-
-```r
-graph1 + graph2 + graph3 
-```
-
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-&lt;img src="presentation_files/figure-html/sizingplots-1.png" width="70%" /&gt;
+&lt;img src="presentation_files/figure-html/visual-1-1.png" title="Distribution of Age in dataset" alt="Distribution of Age in dataset" width="70%" /&gt;
 
 ---
-## Demographics Overviews
+##Demographics Data: Age 
+&lt;img src="presentation_files/figure-html/visual-2-1.png" title="Distribution of Age in dataset" alt="Distribution of Age in dataset" width="70%" /&gt;
+---
+##Demographics Data: Isolation
+&lt;img src="presentation_files/figure-html/visual-3-1.png" title="Distribution of Isolation Status in our dataset." alt="Distribution of Isolation Status in our dataset." width="70%" /&gt;
+---
+## Distributions of PSS-10 Scales
 
--- insert all graphs here  (michelle)
+&lt;img src="presentation_files/figure-html/histogramsslon-1.png" title="Histogram showing approximately normal distribtion of PSS10 means." alt="Histogram showing approximately normal distribtion of PSS10 means." width="70%" /&gt;
+---
+## Distributions of SLON-3 Scales
+
+&lt;img src="presentation_files/figure-html/histogramspss-1.png" title="Histogram showing normal distribution of SLON3 means" alt="Histogram showing normal distribution of SLON3 means" width="70%" /&gt;
 
 ---
-
 ## T-Test for Gender (Relationships and Table)
+
+
+- This table shows all the p-values for t-tests between gender and our PSS-10 and SLON-3 scales. The p value was below 0.05 and 0 was not in the confidence interval. 
 
 
 &lt;table&gt;
@@ -112,45 +112,50 @@ graph1 + graph2 + graph3
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
----
-## ANOVA Tests (Relationships and Table)
 
 ---
-#ANOVA Tests (F values)
+
+## ANOVA Tests: P Values
+
+
+- This table shows all the p-values for ANVOA between Isolation Status, Marital Status, Employment, Dependents, and our PSS-10 and SLON-3 scales. The p value was below 0.05 in every ANOVA test. This gives us evidence to conduct step down tests. 
 
 &lt;table&gt;
 &lt;caption&gt;P Values for ANOVA Results&lt;/caption&gt;
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; PSS &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; SLON &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; PSS &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; SLON &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Isolation Status &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;0.0001 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;0.0001 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Marital Status &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;0.0001 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;0.0001 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Employment &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;0.0001 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;0.0001 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; Dependents &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;0.0001 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &amp;lt;0.0001 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
+---
+##ANOVA Tests: F Values
+- This table shows all the F-values for ANVOA between Isolation Status, Marital Status, Employment, Dependents, and our PSS-10 and SLON-3 scales. The p value was above 1 in every ANOVA test. This gives us evidence to conduct step down tests. 
 
 &lt;table&gt;
 &lt;caption&gt;F Values for ANOVA Results&lt;/caption&gt;
@@ -186,49 +191,488 @@ graph1 + graph2 + graph3
 &lt;/table&gt;
 
 ---
-
-## Linear Regression: Age versus PSS10 and SLON3
-
+##Step Down Tests: PSS: Isolation and Marital Status
+- The significant pairings from PSS-10 Step Down tests for isolation and marital status. All conditions were significant and had p values lower than 0.05.
 
 &lt;table&gt;
-&lt;caption&gt;Linear Regression Results for Age with PSS and SLON Scales&lt;/caption&gt;
+&lt;caption&gt;Step-down Test: Isolation&lt;/caption&gt;
  &lt;thead&gt;
   &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; PSS &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; SLON &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; group1 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; group2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Estimate &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.014 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; -0.013 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Life carries on as usual &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Isolated &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0e+00 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; P values &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Life carries on with minor changes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Isolated &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0e+00 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Confidence Intervals Low &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.145 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.047 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Confidence Intervals High &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.183 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.099 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Life carries on with minor changes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Life carries on as usual &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1e-10 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-michelle: add lin reg graphs
+
+&lt;table&gt;
+&lt;caption&gt;Step-down Test: Marital status&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; group1 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; group2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Married/cohabiting &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Divorced/widowed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7e-10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Single &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Divorced/widowed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0e+00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Single &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Married/cohabiting &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0e+00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+
+##Step Down Tests: PSS: Employment
+- The significant pairings from PSS-10 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
+
+&lt;table&gt;
+&lt;caption&gt;Step-down Test: Employment&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; group1 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; group2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Not employed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Full time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Part time employed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Full time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Part time employed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Not employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000001 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Retired &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Full time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Retired &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Not employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Retired &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Part time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Self-employed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Full time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000004 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Self-employed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Not employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Self-employed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Part time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000001 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Self-employed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Retired &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Student &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Full time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Student &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Not employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0001243294 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Student &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Part time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Student &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Retired &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Student &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Self-employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000000000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+##Step Down Tests: PSS: Dependents
+
+- Not all pairings from the dependents are significant. Only pairs that compare 0 dependents to any number of dependents are significant. This shows that having 1,2, 3, 4, 4+ dependents are not significantly different in terms of PSS means. 
+&lt;table&gt;
+&lt;caption&gt;Step-down: Dependents&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; group1 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; group2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (0,1] &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; (-Inf,0] &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.2800e-08 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (1,2] &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; (-Inf,0] &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0000e-10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (2,3] &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; (-Inf,0] &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1094e-06 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+
+##Step Down Tests: SLON3: Isolation and Marital Status
+- The significant pairings from SLON-3 Step Down tests for isolation and marital status. All conditions were significant and had p values lower than 0.05.
+&lt;table&gt;
+&lt;caption&gt;Step-down: Isolation&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; group1 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; group2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Life carries on as usual &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Isolated &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Life carries on with minor changes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Isolated &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Life carries on with minor changes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Life carries on as usual &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;caption&gt;Step-down: Marital status&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; group1 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; group2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Married/cohabiting &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Divorced/widowed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000e+00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Single &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Divorced/widowed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.2617e-06 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Single &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Married/cohabiting &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0000e+00 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+
+##Step Down Tests: SLON3: Employment
+- The significant pairings from SLON-3 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
+
+
+Table: Step-down: Employment
+
+|group1             |group2             |      p.value|
+|:------------------|:------------------|------------:|
+|Not employed       |Full time employed | 0.0000000000|
+|Part time employed |Full time employed | 0.0008950825|
+|Part time employed |Not employed       | 0.0000000000|
+|Retired            |Full time employed | 0.0000000000|
+|Retired            |Not employed       | 0.0000000000|
+|Retired            |Part time employed | 0.0000000000|
+|Self-employed      |Full time employed | 0.0000616810|
+|Self-employed      |Not employed       | 0.0000000000|
+|Self-employed      |Part time employed | 0.0000000063|
+|Self-employed      |Retired            | 0.0007611027|
+|Student            |Full time employed | 0.0000000000|
+|Student            |Not employed       | 0.0170447932|
+|Student            |Part time employed | 0.0000000000|
+|Student            |Retired            | 0.0000000000|
+|Student            |Self-employed      | 0.0000000000|
+---
+##Step Down Tests: SLON3: Dependents
+- The significant pairings from SLON-3 Step Down tests for dependents. All conditions in dependents were significant.This means that having any different number of dependents leads to a significant different in SLON-3 values (different than PSS-10).
+
+Table: Step-down: Dependents
+
+|group1   |group2   |      p.value|
+|:--------|:--------|------------:|
+|(0,1]    |(-Inf,0] | 0.0000000000|
+|(1,2]    |(-Inf,0] | 0.0000000000|
+|(1,2]    |(0,1]    | 0.0002723704|
+|(2,3]    |(-Inf,0] | 0.0000000000|
+|(2,3]    |(0,1]    | 0.0000056126|
+|(3,4]    |(-Inf,0] | 0.0000000000|
+|(3,4]    |(0,1]    | 0.0000286591|
+|(3,4]    |(1,2]    | 0.0319042337|
+|(4, Inf] |(-Inf,0] | 0.0193009207|
+
+---
+## Linear Regression: Age versus PSS10
+-We created a linear regression model looking at the impact of age on mean PSS10 and SLON3 values. 
+
+
+
+&lt;img src="presentation_files/figure-html/plot-lin-reg-agepss-1.png" width="70%" /&gt;
+
+---
+## Linear Regression: Age versus SLON3
+
+&lt;img src="presentation_files/figure-html/plot-lin-reg-ageslon-1.png" width="70%" /&gt;
+---
+##Estimates and P-values for age regression model for PSS10 and SLON3
+
+
+Table: Linear Regression Results for Age with PSS and SLON Scales
+
+|                          |PSS     |SLON    |
+|:-------------------------|:-------|:-------|
+|Estimate                  |-0.014  |-0.013  |
+|P values                  |&lt;0.0001 |&lt;0.0001 |
+|Confidence Intervals Low  |3.145   |3.047   |
+|Confidence Intervals High |3.183   |3.099   |
+
+
+Table: Linear Regression Results for Age with PSS and SLON Scales
+
+|         |PSS                             |SLON                            |
+|:--------|:-------------------------------|:-------------------------------|
+|Equation |y_expected = 3.164 - 0.014(age) |y_expected = 3.073 - 0.013(age) |
+---
+
+##Main Effects Model: PSS10
+- Next, we created a main effect model incorporating all our explanatory variables for PSS10. The equation is:
+&lt;$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 Male + \hat{\beta}_2 Age + \hat{\beta}_3 Maried/Cohabiting + \hat{\beta}_4 Single +\hat{\beta}_5 Life as Usual + \hat{\beta}_6 Life with Minor Changes + \hat{\beta}_7 Not Employed + \hat{\beta}_8 PartTime+ \hat{\beta}_9 Retired+ \hat{\beta}_a SelfEmployed+ \hat{\beta}_b 1Dependent+ \hat{\beta}_c 2Dependents+ \hat{\beta}_d 3Dependents+ \hat{\beta}_e 4Dependents + \hat{\beta}_e MoreThan4Dependents$&gt;
+
+
+&lt;table&gt;
+&lt;caption&gt;Main Effect Models: Estimates for PSS: Overall Main Effect&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_gender: Male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2037 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0116 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_maritalstatus: Married/cohabiting &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0260 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_maritalstatus: Single &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0786 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_isolation: Life carries on as usual &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0673 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_isolation: Life carries on with minor changes &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2342 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Not employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2092 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Part time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1192 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Retired &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0064 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Self-employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0808 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Student &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1197 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0714 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0711 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0835 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0826 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 4+ &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0856 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ---
 
-#Main Effects Model
+##Main Effects Model: SLON3
+- Next, we created a main effect model incorporating all our explanatory variables for SLON3. 
+- The equation is:
+&lt;$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 Male + \hat{\beta}_2 Age + \hat{\beta}_3 Maried/Cohabiting + \hat{\beta}_4 Single +\hat{\beta}_5 Life as Usual + \hat{\beta}_6 Life with Minor Changes + \hat{\beta}_7 Not Employed + \hat{\beta}_8 PartTime+ \hat{\beta}_9 Retired+ \hat{\beta}_a SelfEmployed+ \hat{\beta}_b 1Dependent+ \hat{\beta}_c 2Dependents+ \hat{\beta}_d 3Dependents+ \hat{\beta}_e 4Dependents + \hat{\beta}_e MoreThan4Dependents$&gt;
 
 
+&lt;table&gt;
+&lt;caption&gt;Main Effect Models: Estimates for SLON: Overall Main Effect&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_gender: Male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1947 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0010 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_maritalstatus: Married/cohabiting &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.3214 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_maritalstatus: Single &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0922 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_isolation: Life carries on as usual &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.5862 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_isolation: Life carries on with minor changes &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.3988 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Not employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1591 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Part time employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0122 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Retired &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0370 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Self-employed &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0693 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_employment: Student &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0116 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0330 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0016 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0176 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0694 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dem_dependentsgrouped: 4+ &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0031 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+##Adjusted R squared Values for Main Effects Model: PSS10 and SLON3
 
 
 
@@ -254,320 +698,84 @@ michelle: add lin reg graphs
 
 ---
 
-
-
-
-
+##Residual Plot for Main Effects Model: PSS10
+&lt;img src="presentation_files/figure-html/residualplot-PSSmaineffect-1.png" width="70%" /&gt;
+---
+##Residual Plot for Main Effects Model: SLON3
+&lt;img src="presentation_files/figure-html/residualplot-SLONmaineffect-1.png" width="70%" /&gt;
 ---
 
+##Adjusted R squared values for Interaction Models
 
-
-
-
-
-
-```r
-graph8 + graph9
-```
-
-&lt;img src="presentation_files/figure-html/sizingplots-4-1.png" width="70%" /&gt;
-
-```r
-  plot_layout(ncol = 2)
-```
-
-```
-## $ncol
-## [1] 2
-## 
-## $nrow
-## NULL
-## 
-## $byrow
-## NULL
-## 
-## $widths
-## NULL
-## 
-## $heights
-## NULL
-## 
-## $guides
-## NULL
-## 
-## $tag_level
-## NULL
-## 
-## $design
-## NULL
-## 
-## attr(,"class")
-## [1] "plot_layout"
-```
-
-
-
-
-
-
-
-Table: Interaction Models: Adjusted R^2 Values for PSS and SLON
-
-|                           | Adjusted R^2 Value|
-|:--------------------------|------------------:|
-|PSS: Age+Gender            |             0.1303|
-|PSS: Employment+Isolation  |             0.1250|
-|PSS: Marital+Isolation     |             0.1231|
-|PSS: Age+Isolation         |             0.1256|
-|PSS: Gender+Isolation      |             0.1250|
-|PSS: Dependents+Isolation  |             0.1230|
-|SLON: Age+Gender           |             0.1044|
-|SLON: Employment+Isolation |             0.1040|
-|SLON: Marital+Isolation    |             0.1032|
-
-```
-##                            Adjusted R^2 Value
-## PSS: Age+Gender                        0.1303
-## PSS: Employment+Isolation              0.1250
-## PSS: Marital+Isolation                 0.1231
-## PSS: Age+Isolation                     0.1256
-## PSS: Gender+Isolation                  0.1250
-## PSS: Dependents+Isolation              0.1230
-## SLON: Age+Gender                       0.1044
-## SLON: Employment+Isolation             0.1040
-## SLON: Marital+Isolation                0.1032
-```
-
-## Linear Regression Overall: PSS
-
-## Interaction Models 
-
-## Adjusted R2 Values Table 
-
-## 
----
-## xaringan
-
-- The presentation is created using the `xaringan` package
-
-- Use `---` to separate slides and `--` for incremental builds
-
---
-
-- Like this
-
----
-
-## Layouts
-
-You can use plain text
-
-- or bullet points
-
-.pull-left[
-or text in two columns `\(^*\)`
-]
-.pull-right[
-- like
-- this
-]
-
-.footnote[
-[*] And add footnotes
-]
-
----
-
-## Code
-
-
-```r
-# a boring regression
-model &lt;- lm(dist ~ speed, data = cars)
-tidy(model)
-```
-
-```
-## # A tibble: 2 × 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)   -17.6      6.76      -2.60 1.23e- 2
-## 2 speed           3.93     0.416      9.46 1.49e-12
-```
-
-```r
-glance(model)
-```
-
-```
-## # A tibble: 1 × 12
-##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1     0.651         0.644  15.4      89.6 1.49e-12     1  -207.  419.  425.
-## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
-```
-
----
-
-## Plots
-
-
-
-&lt;img src="presentation_files/figure-html/plot-penguins-1.png" title="Body mass vs. flipper lenght of Palmer Penguins for species Adelie and all the others combined together. There is a relatively strong, positive relationship between the two variables. The Adelie penguins are clustered together but they don't exhibit a different trend than the rest of the penguins." alt="Body mass vs. flipper lenght of Palmer Penguins for species Adelie and all the others combined together. There is a relatively strong, positive relationship between the two variables. The Adelie penguins are clustered together but they don't exhibit a different trend than the rest of the penguins." width="70%" /&gt;
-
----
-
-## Plot and text
-
-.pull-left[
-- Some text
-- goes here
-]
-.pull-right[
-&lt;img src="presentation_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
-
----
-
-class: inverse, middle, center
-
-# A new section...
-
----
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
+-Because we had low r-squared values for our main effect model, we attempted to run several interaction models to see which one fit the data better.
 
 &lt;table&gt;
+&lt;caption&gt;Interaction Models: Adjusted R^2 Values for PSS and SLON&lt;/caption&gt;
  &lt;thead&gt;
   &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; species &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; island &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; bill_length_mm &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; bill_depth_mm &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; flipper_length_mm &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; body_mass_g &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; sex &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Adjusted R^2 Value &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 39.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 181 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3750 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PSS: Age+Gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1303 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 39.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 186 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3800 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PSS: Employment+Isolation &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1250 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 40.3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 195 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3250 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PSS: Marital+Isolation &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1231 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PSS: Age+Isolation &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1256 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 36.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19.3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 193 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3450 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; female &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PSS: Gender+Isolation &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1250 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Adelie &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Torgersen &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 39.3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 190 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3650 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; male &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2007 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PSS: Dependents+Isolation &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1230 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SLON: Age+Gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1044 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SLON: Employment+Isolation &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1040 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SLON: Marital+Isolation &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1032 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
 ---
+## Interaction Models: Age and Gender: PSS 
+ - Highest R-squared value of the interaction models. 
 
-## Images
+---
+## Interaction Models: Age and Gender: SLON3 
+ - Highest R-squared value of the interaction models. 
+ 
 
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="img/watercolour_sys02_img32_percolate.jpg" alt="Image credit: Danielle Navarro, Percolate." width="40%" /&gt;
-&lt;p class="caption"&gt;Image credit: Danielle Navarro, Percolate.&lt;/p&gt;
-&lt;/div&gt;
 
-Or you can also include a full page image. See next slide.
 
 ---
 
-background-image: url(img/watercolour_sys02_img32_percolate.jpg)
+## Interaction Models:Residuals PSS10
+
 
 ---
+## Interaction Models:Residuals PSS10
 
-## Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &amp;#36;\alpha+\beta$ renders `\(\alpha+\beta\)`. You can use the display style with double dollar signs:
-
-```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-`$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$`
-
-Limitations:
-
-1. The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-1. There should not be spaces after the opening `$` or before the closing `$`.
-
-1. Math does not work on the title slide (see [#61](https://github.com/yihui/xaringan/issues/61) for a workaround).
-
----
-
-class: inverse, middle, center
-
-# Wrap up
-
----
-
-## Feeling adventurous?
-
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
-
-- You are welcomed to use the default styling of the slides. In fact, that's what I expect the majority of you will do. You will differentiate yourself with the content of your presentation.
-
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
-
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
