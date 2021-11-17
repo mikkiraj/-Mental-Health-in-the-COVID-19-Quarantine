@@ -156,15 +156,22 @@ anovaSLONdepend <-summary(aov(cleancovid$SLON3_avg~cleancovid$Dem_dependentsgrou
 ```
 
 ```{r anova-table, echo=FALSE}
-anovatab <- matrix(c(0, 0, 
-                     1.93*10^-258, 1.45*10^-298,
-                     0, 6.02*10^-160, 
-                     1.33*10^-16, 4.12*10^-63), 
+anovatab <- matrix(c('<0.0001', '<0.0001',  
+                     '<0.0001', '<0.0001',
+                     '<0.0001', '<0.0001', 
+                     '<0.0001', '<0.0001'), 
                    ncol=2, byrow=TRUE) 
+#actual values 
+# anovatab <- matrix(c(0, 0, 
+#                      1.93*10^-258, 1.45*10^-298,
+#                      0, 6.02*10^-160, 
+#                      1.33*10^-16, 4.12*10^-63), 
+#                    ncol=2, byrow=TRUE) 
 colnames(anovatab) <- c('PSS','SLON')
 rownames(anovatab) <- c('Isolation Status', 'Marital Status', 'Employment', 'Dependents')
 anovatab <- as.table(anovatab)
 knitr::kable(anovatab,digits=10,caption="P Values for ANOVA Results")
+table1 <- anovatab
 ```
 
 ```{r anova-table-Fvalues, echo=FALSE}
@@ -177,8 +184,74 @@ colnames(anovatab_Fvalues) <- c('PSS','SLON')
 rownames(anovatab_Fvalues) <- c('Isolation Status', 'Marital Status', 'Employment', 'Dependents')
 anovatab_Fvalues <- as.table(anovatab_Fvalues)
 knitr::kable(anovatab_Fvalues,digits=10,caption="F Values for ANOVA Results")
+table2 <- anovatab_Fvalues
 ```
 
+
+```{r tableknitting, echo=FALSE}
+# table1+table2
+```
+
+```{r PSSstepdown}
+anovaPSSisolation_step <- pairwise.t.test(cleancovid$PSS10_avg,cleancovid$Dem_isolation, p.adj = "holm")
+sigpairs <- broom::tidy(anovaPSSisolation_step) %>%
+  filter(p.value<0.05) %>%
+  arrange(group1,group2)
+nrow(sigpairs)
+knitr::kable(sigpairs, digits=10,caption="Step-down Test: Isolation") 
+
+anovaPSSmarital_step <- pairwise.t.test(cleancovid$PSS10_avg,cleancovid$Dem_maritalstatus, p.adj = "holm")
+sigpairs <- broom::tidy(anovaPSSmarital_step) %>%
+  filter(p.value<0.05) %>%
+  arrange(group1,group2)
+nrow(sigpairs)
+knitr::kable(sigpairs, digits=10,caption="Step-down Test: Marital status") 
+
+anovaPSSemploy_step <- pairwise.t.test(cleancovid$PSS10_avg,cleancovid$Dem_employment, p.adj = "holm")
+sigpairs <- broom::tidy(anovaPSSemploy_step) %>%
+  filter(p.value<0.05) %>%
+  arrange(group1,group2)
+nrow(sigpairs)
+knitr::kable(sigpairs, digits=10,caption="Step-down Test: Employment") 
+
+anovaPSSdepend_step <- pairwise.t.test(cleancovid$PSS10_avg,cleancovid$Dem_dependentsgrouped, p.adj = "holm")
+sigpairs <- broom::tidy(anovaPSSdepend_step) %>%
+  filter(p.value<0.05) %>%
+  arrange(group1,group2)
+nrow(sigpairs)
+knitr::kable(sigpairs, digits=10,caption="Step-down: Dependents") 
+```
+
+
+```{r SLONstepdown}
+anovaSLONisolation_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_isolation, p.adj = "holm")
+sigpairs <- broom::tidy(anovaSLONisolation_step) %>%
+  filter(p.value<0.05) %>%
+  arrange(group1,group2)
+nrow(sigpairs)
+knitr::kable(sigpairs, digits=10,caption="Step-down: Isolation") 
+
+anovaSLONmarital_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_maritalstatus, p.adj = "holm")
+sigpairs <- broom::tidy(anovaSLONmarital_step) %>%
+  filter(p.value<0.05) %>%
+  arrange(group1,group2)
+nrow(sigpairs)
+knitr::kable(sigpairs, digits=10,caption="Step-down: Marital status") 
+
+anovaSLONemploy_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_employment, p.adj = "holm")
+sigpairs <- broom::tidy(anovaSLONemploy_step) %>%
+  filter(p.value<0.05) %>%
+  arrange(group1,group2)
+nrow(sigpairs)
+knitr::kable(sigpairs, digits=10,caption="Step-down: Employment") 
+
+anovaSLONdepend_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_dependentsgrouped, p.adj = "holm")
+sigpairs <- broom::tidy(anovaSLONdepend_step) %>%
+  filter(p.value<0.05) %>%
+  arrange(group1,group2)
+nrow(sigpairs)
+knitr::kable(sigpairs, digits=10,caption="Step-down: Dependents") 
+```
 
 ```{r lin-reg-age, echo=FALSE}
 covid_PSSage <- linear_reg() %>%
@@ -261,6 +334,26 @@ covid_SLON <- linear_reg() %>%
   set_engine("lm") %>%
   fit(SLON3_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped, data = cleancovid)
   covid_SLON_tidy <- tidy(covid_SLON, conf.int=TRUE)
+```
+
+```{r PSS-maineffect-tables}
+PSS_maineffect_table <- matrix(c(-0.2037, -0.0116, -0.0260, 0.0786, -0.0673, -0.2342, 0.2092, 0.1192, -0.0064, 0.0808, 0.1197, 0.0714, 0.0711, 0.0835, 0.0826, 0.0856), 
+                        ncol=1, byrow=TRUE)
+colnames(PSS_maineffect_table) <- c('Estimate')
+rownames(PSS_maineffect_table) <- c('Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2',  'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+')
+PSS_maineffect_table <- as.table(PSS_maineffect_table)
+knitr::kable(PSS_maineffect_table,digits=10,caption="Main Effect Models: Estimates for PSS: Overall Main Effect") 
+
+```
+
+
+```{r SLON-maineffect-tables}
+SLON_maineffect_table <- matrix(c(-0.1947, -0.0010, -0.3214, -0.0922, -0.5862, -0.3988, 0.1591, 0.0122, 0.0370, -0.0693, 0.0116, 0.0330, -0.0016, -0.0176, -0.0694, 0.0031), 
+                        ncol=1, byrow=TRUE)
+colnames(SLON_maineffect_table) <- c('Estimate')
+rownames(SLON_maineffect_table) <- c('Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2',  'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+')
+SLON_maineffect_table <- as.table(SLON_maineffect_table)
+knitr::kable(SLON_maineffect_table,digits=10,caption="Main Effect Models: Estimates for SLON: Overall Main Effect") 
 ```
 
 ```{r adj-R2-values, echo=FALSE}
