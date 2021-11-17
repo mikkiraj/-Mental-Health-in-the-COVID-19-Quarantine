@@ -4,11 +4,10 @@ subtitle: "due October 11, 2021 by 11:59 PM "
 author: "Mihika Rajvanshi, Bhavika Garg, Michelle Huang"
 date: "10/11/2021"
 output: pdf_document
+fontsize: 10
 ---
 
-# Load Packages
-
-```{r load-packages, message = FALSE, warning = FALSE}
+```{r load-packages, message = FALSE, warning = FALSE, echo= FALSE}
 library(tidyverse)
 library(tidymodels)
 library(infer)
@@ -18,12 +17,11 @@ library(dplyr)
 library(patchwork)
 ``` 
 
-# Load Data
 ```{r join-data, message = FALSE, warning = FALSE, echo = FALSE, cache = TRUE}
 covidstressdata <- read_csv("../data/covidstressdata.csv")
 ```
 
-```{r glimpse}
+```{r glimpse, echo= FALSE, message = FALSE}
 cleancovid <- subset (covidstressdata, select = -c(AD_gain, AD_loss, RecordedDate, Duration..in.seconds., UserLanguage, Dem_edu_mom, Dem_Expat, Dem_state, Dem_riskgroup, AD_check, Trust_countrymeasure))%>%
   #removed because of laTex incompatible but will use this for analysis 
   
@@ -32,7 +30,25 @@ filter(Dem_gender %in% c("Male", "Female"), answered_all == "Yes", Dem_isolation
 mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf)))
 ```
 
-```{r visual-1, warning=FALSE, echo=FALSE}
+
+  After two on-campus suicides in the past month, students at the University of North Carolina at Chapel Hill have spoken out about the mental health crisis that has arisen alongside the COVID-19 pandemic, comparing declining mental health to “a second pandemic”. Mental health crises so close to home highlight how COVID-19 is not merely a medical phenomenon, but also how institutional organizations failed to target socio-psychological consequences that arose from restrictions during this global health crisis (Javed et. al, 2020, Yamada et. al 2021). In particular, evidence indicates that the mental health impacts will be the greatest and longest-lasting globally in under-served populations of LMICs, emphasizing a need for a solution that identifies and addresses the social determinants of mental health during this pandemic (Kola, 2021).  
+
+
+  Because of the pertinence of this issue, our team has proposed the research question: How do age, gender, level of isolation, marital status, number of dependents, and employment affect global mental health outcomes during COVID-19? To explore our question, we referenced data from the COVIDiStress Global Survey focused on the psychological and behavioral impact of the coronavirus crisis from the Open Science Framework database. The collection efforts for this data spanned from March to May of 2020 and used survey forms across 179 countries. In total, the data represents 125,306 people with demographic characteristics for countries with over 200 responses who met the survey inclusion criteria (over 18 years of age providing informed consent) and accessed the online survey link over a period of 62 days. A variety of adults with varying demographics provided self-reports about the proximate psychological effects of the COVID-19 pandemic, which were translated as indicators for mental health outcomes. A wide range of variables was collected during this study, demographic data, psychological effects of COVID-19, risk-taking intention, personality characteristics, loneliness levels, stress levels, levels of trust, and willingness to comply with COVID-19 regulations. More specific variables observed include experiences of distress from COVID-19 restrictions, coping mechanisms during quarantine, and availability of social support. To respond to the survey questions, participants typically supplied their answers on a 5-point scale ranging from ‘Strongly disagree’ to ‘Strongly agree,’ and added text to explain their choices (Yamada, 2021).  
+       
+  In order to answer our research question, we used our predictor variables (x) age, gender, level of isolation, marital status, number of dependents, and employment status, to determine if there were any evident correlations with our outcome variables (y), the results of two measures of psychological well-being during COVID-19.  The ages included in this study ranged from 18 to 110 years old, and the gender of the participants was limited to either male or female. Marital status was defined as "Single", "Divorced/widowed", or  "Married/cohabiting," and isolation status was distinguished on a scale of  “Isolated”, “Life Carries On With Minor Changes,” and  “Life Carries on as Usual.” Other variables with more descriptors were employment status, which was categorized as “Not employed", "Retired", "Full time employed", "Student", "Part-time employed", "Self-employed", and dependent count, which was limited to a scale of 0-9 dependents and grouped as 0, 1, 2, 3, 4, and 4+ dependents. 
+      
+  Additionally, we picked the two most relevant measures in the study as response variables: PSS-10 and SLON-3. The PSS-10, Perceived Stress Scale, measures perceived stress in an individual and the SLON-3, Short Term Self-Report Scale of Lonliness, measures feelings of loneliness in individuals. We included these measures in attempts to incorporate the two main focuses of depression: anxiety and anhedonia, otherwise known as worriedness and sadness. Together, we take these two scales to represent a quantitative measure of psychological well-being. We then considered if the relationship between our factors and the various psychological well-being scales is statistically significant for each of three scales, using a variety of statistical methods including two-tailed two-sample t-tests, ANOVA tests, linear regression models, and the comparison of main and interaction models for our dataset.  
+       
+  The COVIDiStress Dataset we used is substantial, with over 125,000 observations and 152 variables. In order to manage this dataset, we subsetted the relevant columns and cleaned them, dropping N/A values, irrelevant responses such as “Refuse to Answered All,” and translation errors in our variables of interest. We filtered the gender variable for relevant genders, isolation status, marital status, and employment status as mentioned above. We grouped the number of dependents as mentioned as well in order to outlier dependents data such as one observation with 84 dependents. These filtered data were all included in our main working dataset, “cleancovid,” for more accessible and convenient analysis.  
+       
+  In order to ensure that our data was appropriate for analysis, we created multiple visuals to verify the validity of our means of analysis:
+
+  The following visuals are used to explore our explanatory variables. We graphed the distribution of gender and level of isolation to ensure that each category of the explanatory variables had a sizable amount of observations. We were also able to see the range and distribution of age in our dataset. Marital status, employment status, and the number of dependents was also graphed to see the size and distribution of the population in each category. 
+
+
+
+```{r visual-1, warning=FALSE, echo=FALSE, message = FALSE}
   graph1 <- ggplot(data = cleancovid, aes(x = Dem_gender))+ 
   geom_bar(fill = "orange") +
   labs(title= "Gender Distributions", 
@@ -41,7 +57,7 @@ mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf
   theme(axis.text.x = element_text(angle=30, hjust =1))
 ```
 
-```{r visual-2, warning=FALSE, echo=FALSE}
+```{r visual-2, warning=FALSE, echo=FALSE, message = FALSE}
  graph2 <- ggplot(data = cleancovid, aes(x = Dem_age)) + 
   geom_histogram(fill = "pink") + 
   labs(title= "Age Distributions", 
@@ -51,7 +67,7 @@ mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf
 ```
 
 
-```{r visual-3, warning=FALSE, echo=FALSE}
+```{r visual-3, warning=FALSE, echo=FALSE, message = FALSE}
   graph3 <- ggplot(data = cleancovid, aes(x = Dem_isolation)) + 
   geom_bar(fill = "purple") + 
   labs(title= "Levels of Isolation", 
@@ -60,7 +76,7 @@ mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf
   theme(axis.text.x = element_text(angle=30, hjust =1))
 ```
 
-```{r visual-4, warning=FALSE, echo=FALSE}
+```{r visual-4, warning=FALSE, echo=FALSE, message = FALSE}
  graph12 <- ggplot(data = cleancovid, aes(x = Dem_maritalstatus), 
              fill = Dem_maritalstatus) + 
   geom_bar(fill = "red") + 
@@ -70,7 +86,7 @@ mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf
   theme(axis.text.x = element_text(angle=30, hjust =1))
 ```
 
-```{r visual-5, warning=FALSE, echo=FALSE}
+```{r visual-5, warning=FALSE, echo=FALSE, message = FALSE}
   graph13 <- ggplot(data = cleancovid, aes(x = Dem_employment), 
              fill = Dem_employment) + 
   geom_bar(fill = "green") + 
@@ -80,7 +96,7 @@ mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf
   theme(axis.text.x = element_text(angle=30, hjust =1))
 ```
 
-```{r visual-6, warning=FALSE, echo=FALSE}
+```{r visual-6, warning=FALSE, echo=FALSE, message = FALSE}
   graph14 <- ggplot(data = cleancovid, aes(x = Dem_dependentsgrouped), 
              fill = Dem_dependentsgrouped) + 
   geom_bar(fill = "blue") + 
@@ -90,14 +106,17 @@ mutate(Dem_dependentsgrouped = cut(Dem_dependents, breaks = c(-Inf,0,1,2,3,4,Inf
   theme(axis.text.x = element_text(angle=30, hjust =1))
 ```
 
-```{r sizingplots, echo=FALSE, fig.height = 3}
+```{r sizingplots, echo=FALSE, fig.height = 3, message = FALSE, warning = FALSE}
 graph1 + graph2
 graph3 + graph12
 graph13 + graph14
 ```
 
 
-```{r histograms, echo=FALSE}
+ Additionally, we graphed the three histograms below to show the distribution of our response variables, the means of the PSS10 and SLON3 mental health indicator scores. We created these distributions to ensure that they are approximately normal, justifying our use of our analysis methods.
+
+
+```{r histograms, echo=FALSE, message = FALSE}
  graph4 <- ggplot(data = cleancovid, aes(x =PSS10_avg)) + 
   geom_histogram()+
   labs(title = "Distribution of PSS Averages", 
@@ -106,7 +125,7 @@ graph13 + graph14
 ```
 
 
-```{r histograms-2, echo=FALSE}
+```{r histograms-2, echo=FALSE, message = FALSE}
   graph5 <- ggplot(data = cleancovid, aes(x = SLON3_avg)) + 
   geom_histogram()+
   labs(title = "Distribution of SLON Averages", 
@@ -114,16 +133,22 @@ graph13 + graph14
        y = "Count")
 ```
 
-```{r sizingplots-2, echo=FALSE}
+```{r sizingplots-2, echo=FALSE, fig.height= 3}
 graph4 + graph5 
 ```
 
-```{r ttest-gender, echo=FALSE}
+
+  After visualizing our data,  we began our analysis to dive into our inquiry as to which variables have an impact on mental health indicators:
+
+  We ran a two-tailed two-sample t-tests on the cleaned dataset on both the PSS-10 and SLON-3 scales. We did this to examine the relationship between gender and PSS-10 and SLON-3 scales to understand how gender can impact mental health wellbeing. The null hypothesis for our two-sample was that the average PSS-10 and SLON-3 scales were not significantly different for males and females. The alternate hypothesis was that the averages for both genders for both scales were significantly different. A condensed table of the p-values and confidence intervals from the two t-tests is below. For both scales, the p-value was under alpha = 0.05 and 0 was not included in the confidence interval. For this reason, we can reject the null hypothesis, and explore our alternative hypothesis that gender has some relationship with mental health outcomes. 
+
+
+```{r ttest-gender, echo=FALSE, message = FALSE}
 genderPSSttest <- t.test(PSS10_avg~Dem_gender, data= cleancovid, var.equal=FALSE)
 genderSLONttest <- t.test(SLON3_avg~Dem_gender, data= cleancovid, var.equal =FALSE)
 ```
 
-```{r ttest-table, echo=FALSE}
+```{r ttest-table, echo=FALSE, message = FALSE}
 ttesttab <- matrix(c(2.23*10^-219, 1.16*10^-135, 
                      0.211, 0.221,
                      0.239, 0.259), 
@@ -133,6 +158,12 @@ rownames(ttesttab) <- c('P values', 'Confidence Intervals Low', 'Confidence Inte
 tttesttab <- as.table(ttesttab)
 knitr::kable(ttesttab,digits=10,caption="T-Test Results for Gender with PSS and SLON Scales")
 ```
+
+
+  For the isolation status, marital status, employment status, level of dependents, we did a series of ANOVA tests to understand the impact of the different values of these explanatory variables. We chose ANOVA tests because there were more than two levels in each variable, and these explanatory variables were categorical. The null hypothesis of the ANOVA tests was to measure if each condition of the explanatory variable had a statistically different mean PSS-10 and SLON-3 values, seeing if each variable had an approximate equal correlation with the response variable. The alternate hypothesis posits that even one condition has statistically significant p-values when analyzed in comparison to the response variable. For example, for isolation status, the “Isolated”, “Life Carries On With Minor Changes,” “Life Carries on as Usual” categories under the null hypothesis would be assumed not to have statistically significant relationships with average PSS-10 and SLON-3 scores, but if the ANOVA test indicates high F-values and low P-values, the alternative hypothesis could be put under further analysis. The results of our test showed that we had p-values that were much lower than 0.05 for all of the explanatory variables, as well as very high F-values ranging from 20.8 to 1547.0, indicating significance in the correlation and allowing us to reject the null hypothesis for all of these categorical variables, assuming that there is a relationship between the explanatory variables and average PSS-10 and SLON-3 scores and calling for further investigation. 
+
+  After running the one-sided ANOVA tests, we planned a series of step-down tests using a Holm correction for multiple comparisons when the null hypothesis was rejected. The results of these step-down tests indicated that PSS-10 and SLON-3 scores differed across the majority of pairwise community comparisons, with the exception of dependent number for PSS-10 estimate, as multiple comparisons between dependent numbers showed no difference in PSS-10 scores. The Step-down Tables below show the comparisons and differences between groups within each variable, showing that all variables had a significant difference in affecting mental health outcome scores except for dependent number in regards to PSS-10 estimate (but not SLON-3), in which individuals with more than one dependent only had significant differences in mental health indicators with individuals who had no dependents, but not with other individuals that have dependents.
+
 
 
 ```{r anova-isolation, echo=FALSE}
@@ -192,7 +223,7 @@ table2 <- anovatab_Fvalues
 # table1+table2
 ```
 
-```{r PSSstepdown}
+```{r PSSstepdown, echo=FALSE}
 anovaPSSisolation_step <- pairwise.t.test(cleancovid$PSS10_avg,cleancovid$Dem_isolation, p.adj = "holm")
 sigpairs <- broom::tidy(anovaPSSisolation_step) %>%
   filter(p.value<0.05) %>%
@@ -223,37 +254,41 @@ knitr::kable(sigpairs, digits=10,caption="Step-down: Dependents")
 ```
 
 
-```{r SLONstepdown}
+```{r SLONstepdown, echo=FALSE}
 anovaSLONisolation_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_isolation, p.adj = "holm")
 sigpairs <- broom::tidy(anovaSLONisolation_step) %>%
   filter(p.value<0.05) %>%
   arrange(group1,group2)
-nrow(sigpairs)
 knitr::kable(sigpairs, digits=10,caption="Step-down: Isolation") 
 
 anovaSLONmarital_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_maritalstatus, p.adj = "holm")
 sigpairs <- broom::tidy(anovaSLONmarital_step) %>%
   filter(p.value<0.05) %>%
   arrange(group1,group2)
-nrow(sigpairs)
 knitr::kable(sigpairs, digits=10,caption="Step-down: Marital status") 
 
 anovaSLONemploy_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_employment, p.adj = "holm")
 sigpairs <- broom::tidy(anovaSLONemploy_step) %>%
   filter(p.value<0.05) %>%
   arrange(group1,group2)
-nrow(sigpairs)
 knitr::kable(sigpairs, digits=10,caption="Step-down: Employment") 
 
 anovaSLONdepend_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_dependentsgrouped, p.adj = "holm")
 sigpairs <- broom::tidy(anovaSLONdepend_step) %>%
   filter(p.value<0.05) %>%
   arrange(group1,group2)
-nrow(sigpairs)
 knitr::kable(sigpairs, digits=10,caption="Step-down: Dependents") 
 ```
 
-```{r lin-reg-age, echo=FALSE}
+
+  Additionally, because we decided to treat age as a continuous variable, instead of performing ANOVA or t-tests to determine variable significance, we performed a linear regression for the relationship between age and the PSS-10 and SLON-3 scales. The coefficients and intercepts as well as the p-values are summarized in the table below.  
+     
+  For PSS-10, the linear regression model based on age is: $\hat{y} = 3.164 - 0.014age_i$. This means that based on a one-year increase in age, there was an expected 0.014 decrease in PSS-10 mean score, and individuals who are 18 have a baseline expected PSS-10 score of 3.164. The p-value was under 0.05 and 0 was not included in the confidence intervals for the coefficients. 
+     
+  For SLON-3, the linear regression model based on age is:$\hat{y} = 3.073 - 0.013age_i$. This means that based on a one-year increase in age, there was an expected 0.013 decrease in SLON-3 mean score, and individuals who are 18 have an expected SLON-3 score of 3.073. The p-value was under 0.05 and 0 was not included in the confidence intervals for the coefficients. The graphs for the linear regression of age and PSS-10 and SLON-3 are shown below. This means that overall, there is a correlation between a decrease in negative mental health (more mental stability and greater positive mental health) and an increase in age. As individuals get older, they are less likely to show indicators of depression, as opposed to younger adults, who have higher indicators of depression.
+
+
+```{r lin-reg-age, echo=FALSE, message = FALSE}
 covid_PSSage <- linear_reg() %>%
   set_engine("lm") %>%
   fit(PSS10_avg~Dem_age, data = cleancovid)
@@ -265,7 +300,7 @@ covid_SLONage <- linear_reg() %>%
   covid_SLONage_tidy <- tidy(covid_SLONage, conf.int = TRUE)
 ```
 
-```{r lin-reg-table, echo=FALSE}
+```{r lin-reg-table, echo=FALSE, message = FALSE}
 lin_reg_table <- matrix(c(-0.014, -0.013,
                           0, 0, 
                           3.145, 3.047,
@@ -277,7 +312,7 @@ lin_reg_table <- as.table(lin_reg_table)
 knitr::kable(lin_reg_table,digits=10,caption="Linear Regression Results for Age with PSS and SLON Scales") 
 ```
 
-```{r lin-reg-equations-table, echo=FALSE}
+```{r lin-reg-equations-table, echo=FALSE, message = FALSE}
 lin_reg_equations_table <- matrix(c('y_expected = 3.164 - 0.014(age)', 
                                     'y_expected = 3.073 - 0.013(age)' 
                                     ),  
@@ -288,7 +323,7 @@ lin_reg_equations_table <- as.table(lin_reg_equations_table)
 knitr::kable(lin_reg_equations_table,digits=10,caption="Linear Regression Results for Age with PSS and SLON Scales")
 ```
 
-```{r plot-lin-reg-age, echo=FALSE}
+```{r plot-lin-reg-age, echo=FALSE, message = FALSE}
 #PSSmeans
 graph6 <- ggplot(data = cleancovid, 
        aes(x = Dem_age, 
@@ -324,7 +359,20 @@ graph7
 ```
 
 
-```{r lin-reg-overall, echo=FALSE}
+  After we have determined the significance of the effect of each variable on our response variables, we made a series of main and interaction effects models to understand how our explanatory variables could come together to predict PSS-10 and SLON-3 values. First, we created the main effects model incorporating all the explanatory variables. The graph for the linear regression and the residual plot is shown below. There is no significant pattern in the residual plot in the PSS-10 scale, but the adjusted r-squared value is fairly low (PSS10: 0.1044; SLON3: 0.1028). The SLON-3 residual plot, however, does still show a pattern. This shows that the main effect model may somewhat accurately predict expected PSS-10, but not SLON-3. 
+
+
+  The model of the main effect is shown below, with the corresponding coefficients for estimated main effect of PSS-10 results and SLON-3 results found in each table, with $\hat{\beta}_1$ as the coefficient for Dem_gender Male, $\hat{\beta}_2$ as the coefficient of Dem_age and so on. The baseline for this model has: Dem_Gender term = 0 as Female, Dem_maritalstatus term = 0 as Divorced/widowed, Dem_isolation term = 0 as isolated, Dem_Employment terms = 0 as Full time employment and Dem_dependents term = 0 as 0 dependents. This equation can be used to show the general relationships between each variable and the corresponding PSS-10 or SLON-3 average score.
+  
+  
+$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 Male + \hat{\beta}_2 Age + \hat{\beta}_3 Maried/Cohabiting + \hat{\beta}_4 Single +\hat{\beta}_5 Life as Usual + \hat{\beta}_6 Life with Minor Changes + \hat{\beta}_7 Not Employed + \hat{\beta}_8 PartTime+ \hat{\beta}_9 Retired+ \hat{\beta}_a SelfEmployed+ \hat{\beta}_b 1Dependent+ \hat{\beta}_c 2Dependents+ \hat{\beta}_d 3Dependents+ \hat{\beta}_e 4Dependents + \hat{\beta}_e MoreThan4Dependents$
+
+  For the main effect of the estimated PSS-10 equation, if each descriptor is at baseline (“Divorced/Widowed,” “Isolated,” “Full-time employed,” or “0”) this means that there will be a 3.1403 increase in average PSS scores. If an observation is “Male,” there is an expected decrease of 0.2037 in average PSS scores,and for every year increase in age, there is an expected decrease of 0.0116 in average PSS scores. If an observation’s marital stuats is “Married/cohabiting,” there is an expected decrease of 0.0260. If an observation’s isolation status is “Life carries on as usual" or “Life carries on with minor changes,” there is an expected decrease of 0.0673 or 0.2342 respectively.If an observation’s employment status is “Not employed,” or "Part time employed," there is an expected 0.2092 and 0.1192 or average PSS scores respectively. If an observation’s employment status is “Self-employed,” or "Student" there is an expected increase of 0.0808 and 0.1197 respectively. If an observation’s employment status is “Retired,” there is an expected decrease of 0.0064 in average PSS scores. If an observation’s number of dependents is 1, 2, 3, 4, or 4+, there is an expected increase of 0.0714, 0.0711,0.0835, 0.0826, 0.0856 in average PSS scores respectively. 
+  
+  For the main effect of the estimated SLON-3 equation, if each descriptor is at baseline (“Divorced/Widowed,” “Isolated,” “Full-time employed,” or “0”) this means that there will be a 3.4468 increase in average SLON scores. If an observation is “Male,” there is an expected decrease of 0.1947 in average SLON scores, and for every year increase in age, there is an expected decrease of 0.0010. If an observation’s marital statuss is “Married/cohabiting,” or "Single" there is an expected decrease of 0.3214 and 0.0922 respectively. If an observation’s isolation status is “Life carries on as usual,” there is an expected decrease of  0.5862 in average SLON scores and if an observation’s isolation status is “Life carries on with minor changes,” there is an expected decrease of 0.3988. If an observation’s employment status is “Not employed,” there is an expected increase of 0.1591 in average SLON scores, if an observation’s employment status is “Part time employed,” there is an expected increase of 0.0122, and if an observation’s employment status is “Retired,” there is an expected increase of 0.0370. If an observation’s employment status is “Self-employed,” there is an expected decrease of 0.0693 in average SLON scores. If an observation’s employment status is “Student,” there is an expected increase of 0.0116 in average SLON scores. If an observation’s number of dependents is 1, 2, 3, 0r 4, there is an expected increase of 0.0330, 0.0016, 0.0176, 0.0694 in average SLON scores respectively. If an observation’s number of dependents is “4+,” there is an expected increase of 0.0031 in average SLON scores.
+
+
+```{r lin-reg-overall, echo=FALSE, message = FALSE}
 covid_PSS <- linear_reg() %>%
   set_engine("lm") %>%
   fit(PSS10_avg~Dem_gender + Dem_age + Dem_maritalstatus + Dem_isolation + Dem_employment + Dem_dependentsgrouped, data = cleancovid)
@@ -336,32 +384,32 @@ covid_SLON <- linear_reg() %>%
   covid_SLON_tidy <- tidy(covid_SLON, conf.int=TRUE)
 ```
 
-```{r PSS-maineffect-tables}
-PSS_maineffect_table <- matrix(c(-0.2037, -0.0116, -0.0260, 0.0786, -0.0673, -0.2342, 0.2092, 0.1192, -0.0064, 0.0808, 0.1197, 0.0714, 0.0711, 0.0835, 0.0826, 0.0856), 
+```{r PSS-maineffect-tables, echo= FALSE, message = FALSE}
+PSS_maineffect_table <- matrix(c(3.1403, -0.2037, -0.0116, -0.0260, 0.0786, -0.0673, -0.2342, 0.2092, 0.1192, -0.0064, 0.0808, 0.1197, 0.0714, 0.0711, 0.0835, 0.0826, 0.0856), 
                         ncol=1, byrow=TRUE)
 colnames(PSS_maineffect_table) <- c('Estimate')
-rownames(PSS_maineffect_table) <- c('Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2',  'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+')
+rownames(PSS_maineffect_table) <- c('Intercept', 'Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2',  'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+')
 PSS_maineffect_table <- as.table(PSS_maineffect_table)
 knitr::kable(PSS_maineffect_table,digits=10,caption="Main Effect Models: Estimates for PSS: Overall Main Effect") 
 
 ```
 
 
-```{r SLON-maineffect-tables}
-SLON_maineffect_table <- matrix(c(-0.1947, -0.0010, -0.3214, -0.0922, -0.5862, -0.3988, 0.1591, 0.0122, 0.0370, -0.0693, 0.0116, 0.0330, -0.0016, -0.0176, -0.0694, 0.0031), 
+```{r SLON-maineffect-tables, echo= FALSE,message = FALSE}
+SLON_maineffect_table <- matrix(c(3.4468, -0.1947, -0.0010, -0.3214, -0.0922, -0.5862, -0.3988, 0.1591, 0.0122, 0.0370, -0.0693, 0.0116, 0.0330, -0.0016, -0.0176, -0.0694, 0.0031), 
                         ncol=1, byrow=TRUE)
 colnames(SLON_maineffect_table) <- c('Estimate')
-rownames(SLON_maineffect_table) <- c('Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2',  'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+')
+rownames(SLON_maineffect_table) <- c('Intercept', 'Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2',  'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+')
 SLON_maineffect_table <- as.table(SLON_maineffect_table)
 knitr::kable(SLON_maineffect_table,digits=10,caption="Main Effect Models: Estimates for SLON: Overall Main Effect") 
 ```
 
-```{r adj-R2-values, echo=FALSE}
+```{r adj-R2-values, echo=FALSE, message = FALSE}
 PSS_R2 <- glance(covid_PSS)$adj.r.squared
 SLON_R2 <- glance(covid_SLON)$adj.r.squared
 ```
 
-```{r adj-R2-values-maineffect-table, echo=FALSE}
+```{r adj-R2-values-maineffect-table, echo=FALSE, message = FALSE}
 maineffect_adjustedR2table <- matrix(c(0.1044, 0.1028), 
                         ncol=1, byrow=TRUE)
 colnames(maineffect_adjustedR2table) <- c('Adjusted R^2 Value')
@@ -369,6 +417,18 @@ rownames(maineffect_adjustedR2table) <- c('PSS', 'SLON')
 maineffect_adjustedR2table <- as.table(maineffect_adjustedR2table)
 knitr::kable(maineffect_adjustedR2table,digits=10,caption="Main Effect Models: Adjusted R^2 Values for PSS and SLON") 
 ```
+
+
+  We also tried several iterations of models to try to accomplish a model with a better fit. We tried interaction effects between age and gender, marital status and isolation, age and isolation, gender and isolation, dependents and isolation,  employment and isolation for both PSS-10 and SLON-3 to see if residuals could account for more variance, and if the explanatory variables could be shown to be more descriptive of the outcome variables. 
+     
+  The interaction model with the highest adjusted r-squared is shown below. The age and gender interaction model had the highest value for both PSS-10 (PSS10: 0.1303, SLON3: 0.104).  However, most of our residual plots for our linear models showed a downward pattern, showing that we may have non-constant variance in our regression model. The only regression model that displayed relatively even variance distribution without patterns around the regression line was the main-effect model of the PSS-10 average scores, indicating that this linear model was the most suitable for graphing the correlation between descriptor variables and PSS score. The adjusted r-squared values are also very small for all models, as shown below in the table, indicating that the models are not capturing all the variability in the data and more complex model systems may be needed to graph such a large and diverse dataset.
+     
+  The models of the interaction effects between age and gender is shown below, with the corresponding coefficients for estimated interaction effects of PSS-10 results and SLON-3 results found in each table, with $\hat{\beta}_1$ as the coefficient for Dem_gender Male, $\hat{\beta}_2$ as the coefficient of Dem_age and so on. The baseline for this model has: Dem_Gender term = 0 as Female, Dem_maritalstatus term = 0 as Divorced/widowed, Dem_isolation term = 0 as isolated, Dem_Employment terms = 0 as Full time employment and Dem_dependents term = 0 as 0 dependents. This equation can be used to show the general relationships between each variable and the corresponding PSS-10 or SLON-3 average score.
+  
+  
+$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 Male + \hat{\beta}_2 Age + \hat{\beta}_3 Maried/Cohabiting + \hat{\beta}_4 Single +\hat{\beta}_5 Life as Usual + \hat{\beta}_6 Life with Minor Changes + \hat{\beta}_7 Not Employed + \hat{\beta}_8 PartTime+ \hat{\beta}_9 Retired+ \hat{\beta}_a SelfEmployed+ \hat{\beta}_b 1Dependent+ \hat{\beta}_c 2Dependents+ \hat{\beta}_d 3Dependents+ \hat{\beta}_e 4Dependents + \hat{\beta}_e MoreThan4Dependents + \hat{\beta}_e Age x Gender$
+
+  After the interaction between age and gender, the expected change in PSS scores decreased from the main-effect model for every variable but “Part-time employed.” For the interaction of age and gender, there is an increase of 0.0105 in average PSS scores. The intercept also increased from 3.1403 to 3.2849 average PSS score. Additionally, in the interaction model the expected change in SLON scores decreased for every variable but “Part-time employed” and “Student.” For the interaction of age and gender, there is an increase of 0.0067 in average SLON scores. The intercept also increased from 3.4468 to 3.5392 average SLON score. The changes from the main effect model indicate that the interaction of being older and male is correlated with having poorer mental health outcomes and higher indicators for stress and lonliness. Although the p-values for all the variables in the interaction models are significant and lower than -0.05, the interaction models have poorer residual distribution and lower $R^2$ values than the main effect models, and are less likely to describe the correlation between descriptors and outcome variables as well as the main effect models. 
 
 
 ```{r interaction-models1, echo=FALSE}
@@ -416,6 +476,9 @@ PSS_maritalstatus_isolation_interaction <- linear_reg() %>%
   PSS_employment_isolation_R2 <- glance(PSS_employment_isolation_interaction)$adj.r.squared
 ```
 
+
+
+
 ```{r interaction-models6, echo=FALSE}
 #PSS: age and gender
   PSS_age_gender_interaction <- linear_reg() %>%
@@ -433,6 +496,11 @@ PSS_maritalstatus_isolation_interaction <- linear_reg() %>%
   SLON_age_gender_interaction_tidy <- tidy(SLON_age_gender_interaction, conf.int=TRUE)
   SLON_age_gender_R2 <- glance(SLON_age_gender_interaction)$adj.r.squared 
 ```
+
+
+
+
+
 
 ```{r interaction-models8, echo=FALSE}
 #SLON: employment and isolation
@@ -452,7 +520,34 @@ PSS_maritalstatus_isolation_interaction <- linear_reg() %>%
   SLON_marital_isolation_R2 <- glance(SLON_marital_isolation_interaction)$adj.r.squared 
 ```
 
-```{r residualplot-PSSmaineffect, echo=FALSE}
+
+
+
+
+```{r PSS-interaction-tables, echo= FALSE}
+PSS_interaction_table <- matrix(c(3.2849, -0.6019, -0.0148, -0.0498, 0.0613, -0.0898, -0.2354, 0.2086, 0.1204, -0.0100, 0.0768, 0.1167, 0.0685, 0.0697, 0.0797, 0.0823, 0.0799, 0.0105),
+                                ncol=1, byrow=TRUE)
+colnames(PSS_interaction_table) <- c('Estimate')
+rownames(PSS_interaction_table) <- c('Intercept', 'Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2',  'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+', 'Dem_gender: Male * Dem_age')
+PSS_interaction_table <- as.table(PSS_interaction_table)
+knitr::kable(PSS_interaction_table,digits=10,caption="Interaction Effect Models: Estimates for PSS: Overall Interaction Effect Between Age and Gender") 
+
+```
+
+
+```{r SLON-interaction-tables, echo= FALSE}
+SLON_interaction_table <- matrix(c(3.5392, -0.4490, -0.0120, -0.3366, -0.1032, -0.6005, -0.4000, 0.1587, 0.0130, 0.0347, -0.0719, 0.0097, 0.0311, -0.0026, -0.0200, -0.0695, -0.0005, 0.0067), 
+                        ncol=1, byrow=TRUE)
+colnames(SLON_interaction_table ) <- c('Estimate')
+rownames(SLON_interaction_table ) <- c('Intercept','Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2',  'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+', 'Dem_gender: Male * Dem_age')
+SLON_interaction_table  <- as.table(SLON_interaction_table )
+knitr::kable(SLON_interaction_table,digits=10,caption="Interaction Effect Models: Estimates for SLON: Overall Interaction Effect Between Age and Gender") 
+```
+
+
+
+
+```{r residualplot-PSSmaineffect, echo=FALSE, fig.width= 2}
 covid_PSS_aug <- augment(covid_PSS$fit)
 
 graph8 <- ggplot(covid_PSS_aug, mapping = aes(x = .fitted, y = .resid)) + 
@@ -463,7 +558,7 @@ labs(title = "Residual Plot of PSS Main Effect Model",
      y = "Residual")  
 ```
 
-```{r residualplot-SLONmaineffect, echo=FALSE}
+```{r residualplot-SLONmaineffect, echo=FALSE, fig.width= 2}
 covid_SLON_aug <- augment(covid_SLON$fit)
 
 graph9 <- ggplot(covid_SLON_aug, mapping = aes(x = .fitted, y = .resid)) + 
@@ -474,12 +569,12 @@ labs(title = "Residual Plot of SLON Main Effect Model",
      y = "Residual")
 ```
 
-```{r sizingplots-4, echo=FALSE, fig.height = 3}
-graph8
-graph9
+```{r sizingplots-4, echo=FALSE}
+graph8 + graph9
 ```
 
-```{r residualplot-PSSagegender, echo=FALSE} 
+
+```{r residualplot-PSSagegender, echo=FALSE, fig.width = 2} 
 PSS_age_gender_interaction_aug <- augment(PSS_age_gender_interaction$fit)
 
 graph10 <- ggplot(PSS_age_gender_interaction_aug, mapping = aes(x = .fitted, y = .resid)) + 
@@ -490,7 +585,7 @@ labs(title = "Residual Plot of Interaction of PSS in Age and Gender",
      y = "Residual") 
 ```
 
-```{r residualplot-SLONagegender, echo=FALSE}
+```{r residualplot-SLONagegender, echo=FALSE, fig.width = 2}
 SLON_age_gender_interaction_aug <- augment(SLON_age_gender_interaction$fit)
 
 graph11 <- ggplot(SLON_age_gender_interaction_aug, mapping = aes(x = .fitted, y = .resid)) + 
@@ -502,9 +597,8 @@ labs(title = "Residual Plot of Interaction of SLON in Age and Gender",
 ```
 
 
-```{r sizingplots-5, echo=FALSE, fig.height = 3}
-graph10
-graph11 
+```{r sizingplots-5, echo=FALSE}
+graph10 + graph11 
 ```
 
 ```{r aqdjustedR2-table, echo=FALSE}
@@ -515,3 +609,6 @@ rownames(adjustedR2table) <- c('PSS: Age+Gender', 'PSS: Employment+Isolation', '
 adjustedR2table <- as.table(adjustedR2table)
 knitr::kable(adjustedR2table,digits=10,caption="Interaction Models: Adjusted R^2 Values for PSS and SLON") 
 ```
+
+
+  In conclusion, we found there was a significant relationship between all of our explanatory variables including age, gender, level of isolation, marital status, employment status, and number of dependents on the PSS-10 and SLON-3 scales through two-tailed t-tests and ANOVA tests. However, when we attempted to fit the PSS-10 scale and SLON-3 scales to a model, we were unable to find a model with high adjusted r-squared values and a good residual plot. This shows that while our explanatory variables certainly may have a relationship with mental health outcomes, just these six variables are not enough to reliably predict scores on the PSS-10 and SLON-3 scales, indicating the need for a more complex model and more explanatory variables. Therefore, we were unable to determine how each explanatory variable affected PSS-10 and SLON-3 values, but we were still able to provide statistical evidence that each explanatory variable did have some sort of an impact. Additionally, one limitation of this model is that we use PSS-10 and SLON-3 scales to approximate mental health outcomes. For true predictive value, there is a need for diagnostic data such as an official clinical diagnosis for depression, Generalized Anxiety Disorder, etc. However, because it is difficult to obtain a clinical diagnosis for each observation in a sample of this size, we found it reasonable to approximate mental health outcomes using these PSS-10 and SLON-3. There is also precedence for using these scales as other studies examining mental health outcomes also utilize these scales as approximations of quantitative mental health data. 
