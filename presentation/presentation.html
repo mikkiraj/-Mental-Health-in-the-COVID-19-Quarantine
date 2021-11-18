@@ -4,7 +4,7 @@
     <title>Mental Health in the COVID-19 Quarantine</title>
     <meta charset="utf-8" />
     <meta name="author" content="The Statista-Girls: Michelle Huang, Bhavika Garg, Mihika Rajvanshi" />
-    <meta name="date" content="2021-11-16" />
+    <meta name="date" content="2021-11-17" />
     <script src="libs/header-attrs-2.11/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Mental Health in the COVID-19 Quarantine
 ### The Statista-Girls: Michelle Huang, Bhavika Garg, Mihika Rajvanshi
 ### Duke University
-### 2021-11-16
+### 2021-11-17
 
 ---
 
@@ -38,37 +38,44 @@ class: inverse, middle, center
 
 ## Data Overview
 
-- COVIDiSTRESS Global Survey (125,000 observations and 152 columns)
-
+- COVIDiSTRESS Global Survey (125,000 observations and 152 columns) 
 
 - Focused on six explanatory variables: age, gender, level of isolation, marital status, employment status, and number of dependents
-
 
 - Used the PSS-10 (Perceived Stress Scale) and SLON-3 (Short Self-Report Scale of Social Loneliness) as approximate quantitative measure of mental health 
 
 ---
 
 ## Research Question 
+
  - How do age, gender, level of isolation, marital status, number of dependents, and employment affect global mental health outcomes during COVID-19? 
  
+ - Why Do We Care?
  
- - Examined t test and ANOVA tests to determine significance of each explanatory variable
+---
+ 
+## Data Analysis Plan
+
+ - Created exploratory graphs to understand the distribution of our data
  
  
- - Attempted to create models to predict how the explanatory variables can model predicted PSS-10 and SLON-3 values
+ - Examined t-tests, ANOVA tests, and ANOVA step down tests to determine significance of each explanatory variable
+ 
+ 
+ - Attempted to create regression models to predict how the explanatory variables can model predicted PSS-10 and SLON-3 values
  
 ---
 
 ##Demographics Data: Gender
 
-&lt;img src="presentation_files/figure-html/visual-1-1.png" title="Distribution of Age in dataset" alt="Distribution of Age in dataset" width="70%" /&gt;
+&lt;img src="presentation_files/figure-html/visual-1-1.png" title="Distribution of gender in dataset by male and female. " alt="Distribution of gender in dataset by male and female. " width="70%" /&gt;
 
 ---
 ##Demographics Data: Age 
-&lt;img src="presentation_files/figure-html/visual-2-1.png" title="Distribution of Age in dataset" alt="Distribution of Age in dataset" width="70%" /&gt;
+&lt;img src="presentation_files/figure-html/visual-2-1.png" title="Histogram of distribution of Age in dataset" alt="Histogram of distribution of Age in dataset" width="70%" /&gt;
 ---
 ##Demographics Data: Isolation
-&lt;img src="presentation_files/figure-html/visual-3-1.png" title="Distribution of Isolation Status in our dataset." alt="Distribution of Isolation Status in our dataset." width="70%" /&gt;
+&lt;img src="presentation_files/figure-html/visual-3-1.png" title="Distribution of Isolation Status in our dataset" alt="Distribution of Isolation Status in our dataset" width="70%" /&gt;
 ---
 ## Distributions of PSS-10 Scales
 
@@ -252,7 +259,7 @@ class: inverse, middle, center
 ---
 
 ##Step Down Tests: PSS: Employment
-- The significant pairings from PSS-10 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
+ - The significant pairings from PSS-10 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
 
 &lt;table&gt;
 &lt;caption&gt;Step-down Test: Employment&lt;/caption&gt;
@@ -375,7 +382,7 @@ class: inverse, middle, center
 ---
 
 ##Step Down Tests: SLON3: Isolation and Marital Status
-- The significant pairings from SLON-3 Step Down tests for isolation and marital status. All conditions were significant and had p values lower than 0.05.
+ - The significant pairings from SLON-3 Step Down tests for isolation and marital status. All conditions were significant and had p values lower than 0.05.
 &lt;table&gt;
 &lt;caption&gt;Step-down: Isolation&lt;/caption&gt;
  &lt;thead&gt;
@@ -434,7 +441,7 @@ class: inverse, middle, center
 ---
 
 ##Step Down Tests: SLON3: Employment
-- The significant pairings from SLON-3 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
+ - The significant pairings from SLON-3 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
 
 
 Table: Step-down: Employment
@@ -458,7 +465,7 @@ Table: Step-down: Employment
 |Student            |Self-employed      | 0.0000000000|
 ---
 ##Step Down Tests: SLON3: Dependents
-- The significant pairings from SLON-3 Step Down tests for dependents. All conditions in dependents were significant.This means that having any different number of dependents leads to a significant different in SLON-3 values (different than PSS-10).
+ - The significant pairings from SLON-3 Step Down tests for dependents. All conditions in dependents were significant.This means that having any different number of dependents leads to a significant different in SLON-3 values (different than PSS-10).
 
 Table: Step-down: Dependents
 
@@ -476,16 +483,16 @@ Table: Step-down: Dependents
 
 ---
 ## Linear Regression: Age versus PSS10
--We created a linear regression model looking at the impact of age on mean PSS10 and SLON3 values. 
+ - We created a linear regression model looking at the impact of age on mean PSS10 and SLON3 values. 
 
 
 
-&lt;img src="presentation_files/figure-html/plot-lin-reg-agepss-1.png" width="70%" /&gt;
+&lt;img src="presentation_files/figure-html/plot-lin-reg-agepss-1.png" title="Plots that show the linear regression model for age and PSS10 means." alt="Plots that show the linear regression model for age and PSS10 means." width="70%" /&gt;
 
 ---
 ## Linear Regression: Age versus SLON3
 
-&lt;img src="presentation_files/figure-html/plot-lin-reg-ageslon-1.png" width="70%" /&gt;
+&lt;img src="presentation_files/figure-html/plot-lin-reg-ageslon-1.png" title="Plots that show the linear regression model for age and SLON3 means." alt="Plots that show the linear regression model for age and SLON3 means." width="70%" /&gt;
 ---
 ##Estimates and P-values for age regression model for PSS10 and SLON3
 
@@ -699,10 +706,10 @@ Table: Linear Regression Results for Age with PSS and SLON Scales
 ---
 
 ##Residual Plot for Main Effects Model: PSS10
-&lt;img src="presentation_files/figure-html/residualplot-PSSmaineffect-1.png" width="70%" /&gt;
+&lt;img src="presentation_files/figure-html/residualplot-PSSmaineffect-1.png" title="Residual plot for the main effect linear regression model for PSS10." alt="Residual plot for the main effect linear regression model for PSS10." width="70%" /&gt;
 ---
 ##Residual Plot for Main Effects Model: SLON3
-&lt;img src="presentation_files/figure-html/residualplot-SLONmaineffect-1.png" width="70%" /&gt;
+&lt;img src="presentation_files/figure-html/residualplot-SLONmaineffect-1.png" title="Residual plot for the main effect linear regression model for SLON3" alt="Residual plot for the main effect linear regression model for SLON3" width="70%" /&gt;
 ---
 
 ##Adjusted R squared values for Interaction Models
@@ -760,22 +767,73 @@ Table: Linear Regression Results for Age with PSS and SLON Scales
 ---
 ## Interaction Models: Age and Gender: PSS 
  - Highest R-squared value of the interaction models. 
+ &lt;$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 Male + \hat{\beta}_2 Age + \hat{\beta}_3 Maried/Cohabiting + \hat{\beta}_4 Single +\hat{\beta}_5 Life as Usual + \hat{\beta}_6 Life with Minor Changes + \hat{\beta}_7 Not Employed + \hat{\beta}_8 PartTime+ \hat{\beta}_9 Retired+ \hat{\beta}_a SelfEmployed+ \hat{\beta}_b 1Dependent+ \hat{\beta}_c 2Dependents+ \hat{\beta}_d 3Dependents+ \hat{\beta}_e 4Dependents + \hat{\beta}_e MoreThan4Dependents + \hat{\beta}_1 Male*\hat{\beta}_2 Age$&gt;
+
+
+
+
+Table: Interaction Effect Models: Estimates for PSS: Overall Interaction Effect Between Age and Gender
+
+|                                                  | Estimate|
+|:-------------------------------------------------|--------:|
+|Intercept                                         |   3.2849|
+|Dem_gender: Male                                  |  -0.6019|
+|Dem_age                                           |  -0.0148|
+|Dem_maritalstatus: Married/cohabiting             |  -0.0498|
+|Dem_maritalstatus: Single                         |   0.0613|
+|Dem_isolation: Life carries on as usual           |  -0.0898|
+|Dem_isolation: Life carries on with minor changes |  -0.2354|
+|Dem_employment: Not employed                      |   0.2086|
+|Dem_employment: Part time employed                |   0.1204|
+|Dem_employment: Retired                           |  -0.0100|
+|Dem_employment: Self-employed                     |   0.0768|
+|Dem_employment: Student                           |   0.1167|
+|Dem_dependentsgrouped: 1                          |   0.0685|
+|Dem_dependentsgrouped: 2                          |   0.0697|
+|Dem_dependentsgrouped: 3                          |   0.0797|
+|Dem_dependentsgrouped: 4                          |   0.0823|
+|Dem_dependentsgrouped: 4+                         |   0.0799|
+|Dem_gender: Male * Dem_age                        |   0.0105|
 
 ---
 ## Interaction Models: Age and Gender: SLON3 
  - Highest R-squared value of the interaction models. 
  
+  &lt;$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 Male + \hat{\beta}_2 Age + \hat{\beta}_3 Maried/Cohabiting + \hat{\beta}_4 Single +\hat{\beta}_5 Life as Usual + \hat{\beta}_6 Life with Minor Changes + \hat{\beta}_7 Not Employed + \hat{\beta}_8 PartTime+ \hat{\beta}_9 Retired+ \hat{\beta}_a SelfEmployed+ \hat{\beta}_b 1Dependent+ \hat{\beta}_c 2Dependents+ \hat{\beta}_d 3Dependents+ \hat{\beta}_e 4Dependents + \hat{\beta}_e MoreThan4Dependents + \hat{\beta}_1 Male*\hat{\beta}_2 Age$&gt;
 
 
+
+Table: Interaction Effect Models: Estimates for SLON: Overall Interaction Effect Between Age and Gender
+
+|                                                  | Estimate|
+|:-------------------------------------------------|--------:|
+|Intercept                                         |   3.5392|
+|Dem_gender: Male                                  |  -0.4490|
+|Dem_age                                           |  -0.0120|
+|Dem_maritalstatus: Married/cohabiting             |  -0.3366|
+|Dem_maritalstatus: Single                         |  -0.1032|
+|Dem_isolation: Life carries on as usual           |  -0.6005|
+|Dem_isolation: Life carries on with minor changes |  -0.4000|
+|Dem_employment: Not employed                      |   0.1587|
+|Dem_employment: Part time employed                |   0.0130|
+|Dem_employment: Retired                           |   0.0347|
+|Dem_employment: Self-employed                     |  -0.0719|
+|Dem_employment: Student                           |   0.0097|
+|Dem_dependentsgrouped: 1                          |   0.0311|
+|Dem_dependentsgrouped: 2                          |  -0.0026|
+|Dem_dependentsgrouped: 3                          |  -0.0200|
+|Dem_dependentsgrouped: 4                          |  -0.0695|
+|Dem_dependentsgrouped: 4+                         |  -0.0005|
+|Dem_gender: Male * Dem_age                        |   0.0067|
 
 ---
 
 ## Interaction Models:Residuals PSS10
 
-
+&lt;img src="presentation_files/figure-html/residualplot-PSSagegender-1.png" title="Residual plot showing the residuals from PSS 10 age and gender interaction model. " alt="Residual plot showing the residuals from PSS 10 age and gender interaction model. " width="70%" /&gt;
 ---
-## Interaction Models:Residuals PSS10
-
+## Interaction Models:Residuals SLON3
+&lt;img src="presentation_files/figure-html/residualplot-SLONagegender-1.png" title="Residual plot showing the residuals from SLON3 age and gender interaction model. " alt="Residual plot showing the residuals from SLON3 age and gender interaction model. " width="70%" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

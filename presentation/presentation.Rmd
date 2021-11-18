@@ -66,30 +66,37 @@ class: inverse, middle, center
 
 ## Data Overview
 
-- COVIDiSTRESS Global Survey (125,000 observations and 152 columns)
-
+- COVIDiSTRESS Global Survey (125,000 observations and 152 columns) 
 
 - Focused on six explanatory variables: age, gender, level of isolation, marital status, employment status, and number of dependents
-
 
 - Used the PSS-10 (Perceived Stress Scale) and SLON-3 (Short Self-Report Scale of Social Loneliness) as approximate quantitative measure of mental health 
 
 ---
 
 ## Research Question 
+
  - How do age, gender, level of isolation, marital status, number of dependents, and employment affect global mental health outcomes during COVID-19? 
  
+ - Why Do We Care?
  
- - Examined t test and ANOVA tests to determine significance of each explanatory variable
+---
+ 
+## Data Analysis Plan
+
+ - Created exploratory graphs to understand the distribution of our data
  
  
- - Attempted to create models to predict how the explanatory variables can model predicted PSS-10 and SLON-3 values
+ - Examined t-tests, ANOVA tests, and ANOVA step down tests to determine significance of each explanatory variable
+ 
+ 
+ - Attempted to create regression models to predict how the explanatory variables can model predicted PSS-10 and SLON-3 values
  
 ---
 
 ##Demographics Data: Gender
 
-```{r visual-1, warning=FALSE, echo=FALSE, fig.alt = "Distribution of Age in dataset"}
+```{r visual-1, warning=FALSE, echo=FALSE, fig.alt = "Distribution of gender in dataset by male and female. "}
 cleancovid %>%
   filter(Dem_gender %in% c("Male", "Female")) %>%
   ggplot(aes(x = Dem_gender, fill = Dem_gender ))+ 
@@ -102,7 +109,7 @@ cleancovid %>%
 
 ---
 ##Demographics Data: Age 
-```{r visual-2, warning=FALSE, echo=FALSE, message = FALSE, fig.alt = "Distribution of Age in dataset"}
+```{r visual-2, warning=FALSE, echo=FALSE, message = FALSE, fig.alt = "Histogram of distribution of Age in dataset"}
 cleancovid %>%
   ggplot(aes(x = Dem_age)) + 
   geom_histogram(fill = "pink") + 
@@ -112,7 +119,7 @@ cleancovid %>%
 ```
 ---
 ##Demographics Data: Isolation
-```{r visual-3, warning=FALSE, echo=FALSE, fig.alt = "Distribution of Isolation Status in our dataset."}
+```{r visual-3, warning=FALSE, echo=FALSE, fig.alt = "Distribution of Isolation Status in our dataset"}
 cleancovid %>%
   filter(Dem_isolation %in% c("Isolated", "Life carries on with minor changes", "Life carries on as usual")) %>%
   ggplot(aes(x = Dem_isolation, fill = Dem_isolation)) + 
@@ -216,7 +223,7 @@ knitr::kable(anovatab_Fvalues,digits=10,caption="F Values for ANOVA Results", fo
 ##Step Down Tests: PSS: Isolation and Marital Status
 - The significant pairings from PSS-10 Step Down tests for isolation and marital status. All conditions were significant and had p values lower than 0.05.
 
-```{r anovastepdown1, echo = FALSE, warning = FALSE}
+```{r anovastepdown1, echo = FALSE, warning = FALSE, fig.alt = "Table of ANOVA step down tests for PSS10 for isolation and marital status tests that show that each category within the explanatory variable are all significant."}
 anovaPSSisolation_step <- pairwise.t.test(cleancovid$PSS10_avg,cleancovid$Dem_isolation, p.adj = "holm")
 sigpairs <- broom::tidy(anovaPSSisolation_step) %>%
   filter(p.value<0.05) %>%
@@ -232,9 +239,9 @@ knitr::kable(sigpairs, digits=10,caption="Step-down Test: Marital status", forma
 ---
 
 ##Step Down Tests: PSS: Employment
-- The significant pairings from PSS-10 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
+ - The significant pairings from PSS-10 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
 
-```{r anovastepdown2, echo = FALSE, warning = FALSE}
+```{r anovastepdown2, echo = FALSE, warning = FALSE, fig.alt= "Table of ANOVA step down tests for PSS10 employment tests that show that each category within the explanatory variable are all significant."}
 anovaPSSemploy_step <- pairwise.t.test(cleancovid$PSS10_avg,cleancovid$Dem_employment, p.adj = "holm")
 sigpairs <- broom::tidy(anovaPSSemploy_step) %>%
   filter(p.value<0.05) %>%
@@ -245,7 +252,7 @@ knitr::kable(sigpairs, digits=10,caption="Step-down Test: Employment", format = 
 ##Step Down Tests: PSS: Dependents
 
 - Not all pairings from the dependents are significant. Only pairs that compare 0 dependents to any number of dependents are significant. This shows that having 1,2, 3, 4, 4+ dependents are not significantly different in terms of PSS means. 
-```{r anovastepdown3, echo = FALSE, warning = FALSE}
+```{r anovastepdown3, echo = FALSE, warning = FALSE, fig.alt= "Table of ANOVA step down tests for PSS10 number of dependents tests that show that each category within the explanatory variable are not all significant. Only having 0 dependents versus 1+ number of dependents is signficant."}
 anovaPSSdepend_step <- pairwise.t.test(cleancovid$PSS10_avg,cleancovid$Dem_dependentsgrouped, p.adj = "holm")
 sigpairs <- broom::tidy(anovaPSSdepend_step) %>%
   filter(p.value<0.05) %>%
@@ -255,8 +262,8 @@ knitr::kable(sigpairs, digits=10,caption="Step-down: Dependents", format = "html
 ---
 
 ##Step Down Tests: SLON3: Isolation and Marital Status
-- The significant pairings from SLON-3 Step Down tests for isolation and marital status. All conditions were significant and had p values lower than 0.05.
-```{r SLONstepdown1, echo = FALSE, warning = FALSE}
+ - The significant pairings from SLON-3 Step Down tests for isolation and marital status. All conditions were significant and had p values lower than 0.05.
+```{r SLONstepdown1, echo = FALSE, warning = FALSE, fig.alt= "Table of ANOVA step down tests for SLON3 isolation and marital status tests that show that each category within the explanatory variable are all significant."}
 
 anovaSLONisolation_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_isolation, p.adj = "holm")
 sigpairs <- broom::tidy(anovaSLONisolation_step) %>%
@@ -273,9 +280,9 @@ knitr::kable(sigpairs, digits=10,caption="Step-down: Marital status", format = "
 ---
 
 ##Step Down Tests: SLON3: Employment
-- The significant pairings from SLON-3 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
+ - The significant pairings from SLON-3 Step Down tests for employment. All conditions in employment were significant and had p values lower than 0.05. 
 
-```{r SLONstepdown2, echo = FALSE, warning = FALSE, message= FALSE}
+```{r SLONstepdown2, echo = FALSE, warning = FALSE, message= FALSE, fig.alt= "Table of ANOVA step down tests for SLON3 employment tests that show that each category within the explanatory variable are all significant."}
 anovaSLONemploy_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_employment, p.adj = "holm")
 sigpairs <- broom::tidy(anovaSLONemploy_step) %>%
   filter(p.value<0.05) %>%
@@ -284,8 +291,8 @@ knitr::kable(sigpairs, digits=10,caption="Step-down: Employment")
 ```
 ---
 ##Step Down Tests: SLON3: Dependents
-- The significant pairings from SLON-3 Step Down tests for dependents. All conditions in dependents were significant.This means that having any different number of dependents leads to a significant different in SLON-3 values (different than PSS-10).
-```{r SLONstepdown3, echo = FALSE, warning = FALSE, message= FALSE}
+ - The significant pairings from SLON-3 Step Down tests for dependents. All conditions in dependents were significant.This means that having any different number of dependents leads to a significant different in SLON-3 values (different than PSS-10).
+```{r SLONstepdown3, echo = FALSE, warning = FALSE, message= FALSE, fig.alt= "Table of ANOVA step down tests for SLON3 number of dependents tests that show that each category within the explanatory variable are all significant."}
 anovaSLONdepend_step <- pairwise.t.test(cleancovid$SLON3_avg,cleancovid$Dem_dependentsgrouped, p.adj = "holm")
 sigpairs <- broom::tidy(anovaSLONdepend_step) %>%
   filter(p.value<0.05) %>%
@@ -295,7 +302,7 @@ knitr::kable(sigpairs, digits=10,caption="Step-down: Dependents")
 
 ---
 ## Linear Regression: Age versus PSS10
--We created a linear regression model looking at the impact of age on mean PSS10 and SLON3 values. 
+ - We created a linear regression model looking at the impact of age on mean PSS10 and SLON3 values. 
 
 ```{r lin-reg-age, echo=FALSE, warning = FALSE, message = FALSE}
 covid_PSSage <- linear_reg() %>%
@@ -309,7 +316,7 @@ covid_SLONage <- linear_reg() %>%
   covid_SLONage_tidy <- tidy(covid_SLONage, conf.int = TRUE)
 ```
 
-```{r plot-lin-reg-agepss, echo=FALSE, warning = FALSE, message = FALSE}
+```{r plot-lin-reg-agepss, echo=FALSE, warning = FALSE, message = FALSE, fig.alt = "Plots that show the linear regression model for age and PSS10 means." }
 ggplot(data = cleancovid, 
        aes(x = Dem_age, 
            y = PSS10_avg)) +
@@ -327,7 +334,7 @@ ggplot(data = cleancovid,
 ---
 ## Linear Regression: Age versus SLON3
 
-```{r plot-lin-reg-ageslon, echo=FALSE, message= FALSE, warning = FALSE}
+```{r plot-lin-reg-ageslon, echo=FALSE, message= FALSE, warning = FALSE, fig.alt = "Plots that show the linear regression model for age and SLON3 means."}
 ggplot(data = cleancovid, 
        aes(x = Dem_age, 
            y = SLON3_avg)) +
@@ -344,7 +351,7 @@ ggplot(data = cleancovid,
 ---
 ##Estimates and P-values for age regression model for PSS10 and SLON3
 
-```{r lin-reg-table, echo=FALSE}
+```{r lin-reg-table, echo=FALSE, fig.alt = "Table of linear regression estimates and p values for age versus PSS10 and SLON3. All values are significant." }
 lin_reg_table <- matrix(c(-0.014, -0.013,
                           "<0.0001", "<0.0001", 
                           3.145, 3.047,
@@ -356,7 +363,7 @@ lin_reg_table <- as.table(lin_reg_table)
 knitr::kable(lin_reg_table,digits=10,caption="Linear Regression Results for Age with PSS and SLON Scales") 
 ```
 
-```{r lin-reg-equations-table, echo=FALSE}
+```{r lin-reg-equations-table, echo=FALSE, fig.alt = "Table of linear regression equations for age versus PSS10 and SLON3."}
 lin_reg_equations_table <- matrix(c('y_expected = 3.164 - 0.014(age)', 
                                     'y_expected = 3.073 - 0.013(age)' 
                                     ),  
@@ -378,7 +385,7 @@ covid_PSS <- linear_reg() %>%
   covid_PSS_tidy <- tidy(covid_PSS, conf.int=TRUE)
 ``` 
 
-```{r PSS-maineffect-tables, echo = FALSE}
+```{r PSS-maineffect-tables, echo = FALSE, fig.alt= "Table of Main Effects linear regression model coefficients incorporating all explanatory variables for PSS10." }
 PSS_maineffect_table <- matrix(c(-0.2037, -0.0116, -0.0260, 0.0786, -0.0673, -0.2342, 0.2092, 0.1192, -0.0064, 0.0808, 0.1197, 0.0714, 0.0711, 0.0835, 0.0826, 0.0856), 
                         ncol=1, byrow=TRUE)
 colnames(PSS_maineffect_table) <- c('Estimate')
@@ -400,7 +407,7 @@ covid_SLON <- linear_reg() %>%
   covid_SLON_tidy <- tidy(covid_SLON, conf.int=TRUE)
 ```
 
-```{r SLON-maineffect-tables, echo = FALSE}
+```{r SLON-maineffect-tables, echo = FALSE, fig.alt= "Table of Main Effects linear regression model coefficients incorporating all explanatory variables for SLON3"}
 SLON_maineffect_table <- matrix(c(-0.1947, -0.0010, -0.3214, -0.0922, -0.5862, -0.3988, 0.1591, 0.0122, 0.0370, -0.0693, 0.0116, 0.0330, -0.0016, -0.0176, -0.0694, 0.0031), 
                         ncol=1, byrow=TRUE)
 colnames(SLON_maineffect_table) <- c('Estimate')
@@ -416,7 +423,7 @@ PSS_R2 <- glance(covid_PSS)$adj.r.squared
 SLON_R2 <- glance(covid_SLON)$adj.r.squared
 ```
 
-```{r adj-R2-values-maineffect-table, echo=FALSE}
+```{r adj-R2-values-maineffect-table, echo=FALSE, fig.alt = "Table showing the adjusted r squared values for the main effects regression model for PSS10 and SLON3."}
 maineffect_adjustedR2table <- matrix(c(0.1044, 0.1028), 
                         ncol=1, byrow=TRUE)
 colnames(maineffect_adjustedR2table) <- c('Adjusted R^2 Value')
@@ -428,7 +435,7 @@ knitr::kable(maineffect_adjustedR2table,digits=10,caption="Main Effect Models: A
 ---
 
 ##Residual Plot for Main Effects Model: PSS10
-```{r residualplot-PSSmaineffect, echo=FALSE}
+```{r residualplot-PSSmaineffect, echo=FALSE, fig.alt= "Residual plot for the main effect linear regression model for PSS10."}
 covid_PSS_aug <- augment(covid_PSS$fit)
 ggplot(covid_PSS_aug, mapping = aes(x = .fitted, y = .resid)) + 
 geom_point(alpha = 0.5)+
@@ -439,7 +446,7 @@ labs(title = "Residual Plot of PSS Main Effect Model",
 ```
 ---
 ##Residual Plot for Main Effects Model: SLON3
-```{r residualplot-SLONmaineffect, echo=FALSE}
+```{r residualplot-SLONmaineffect, echo=FALSE, fig.alt = "Residual plot for the main effect linear regression model for SLON3"}
 covid_SLON_aug <- augment(covid_SLON$fit)
 ggplot(covid_SLON_aug, mapping = aes(x = .fitted, y = .resid)) + 
 geom_point(alpha = 0.5)+
@@ -454,7 +461,7 @@ labs(title = "Residual Plot of SLON Main Effect Model",
 
 -Because we had low r-squared values for our main effect model, we attempted to run several interaction models to see which one fit the data better.
 
-```{r rsquared table, echo = FALSE, warning = FALSE, message = FALSE}
+```{r rsquared table, echo = FALSE, warning = FALSE, message = FALSE, fig.alt= "Table of adjusted r squared values for each of the six interaction models we ran for both PSS10 and SLON3."}
 adjustedR2table <- matrix(c(0.1303, 0.1250, 0.1231, 0.1256, 0.1250, 0.1230, 0.1044, 0.1040, 0.1032), 
                         ncol=1, byrow=TRUE)
 colnames(adjustedR2table) <- c('Adjusted R^2 Value')
@@ -466,6 +473,7 @@ knitr::kable(adjustedR2table,digits=10,caption="Interaction Models: Adjusted R^2
 ---
 ## Interaction Models: Age and Gender: PSS 
  - Highest R-squared value of the interaction models. 
+ <$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 Male + \hat{\beta}_2 Age + \hat{\beta}_3 Maried/Cohabiting + \hat{\beta}_4 Single +\hat{\beta}_5 Life as Usual + \hat{\beta}_6 Life with Minor Changes + \hat{\beta}_7 Not Employed + \hat{\beta}_8 PartTime+ \hat{\beta}_9 Retired+ \hat{\beta}_a SelfEmployed+ \hat{\beta}_b 1Dependent+ \hat{\beta}_c 2Dependents+ \hat{\beta}_d 3Dependents+ \hat{\beta}_e 4Dependents + \hat{\beta}_e MoreThan4Dependents + \hat{\beta}_1 Male*\hat{\beta}_2 Age$>
 ```{r interaction-models6, echo=FALSE}
 #PSS: age and gender
   PSS_age_gender_interaction <- linear_reg() %>%
@@ -474,10 +482,22 @@ knitr::kable(adjustedR2table,digits=10,caption="Interaction Models: Adjusted R^2
   PSS_age_gender_interaction_tidy <- tidy(PSS_age_gender_interaction, conf.int=TRUE)
   PSS_age_gender_R2 <- glance(PSS_age_gender_interaction)$adj.r.squared 
 ```
+
+
+```{r PSS-interaction-tables, echo= FALSE, fig.alt = "Table showing coefficients for PSS interaction model of age and gender."}
+PSS_interaction_table <- matrix(c(3.2849, -0.6019, -0.0148, -0.0498, 0.0613, -0.0898, -0.2354, 0.2086, 0.1204, -0.0100, 0.0768, 0.1167, 0.0685, 0.0697, 0.0797, 0.0823, 0.0799, 0.0105),
+  ncol=1, byrow=TRUE)
+colnames(PSS_interaction_table) <- c('Estimate')
+rownames(PSS_interaction_table) <- c('Intercept', 'Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2', 'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4','Dem_dependentsgrouped: 4+', 'Dem_gender: Male * Dem_age')
+PSS_interaction_table <- as.table(PSS_interaction_table)
+knitr::kable(PSS_interaction_table,digits=10,caption="Interaction Effect Models: Estimates for PSS: Overall Interaction Effect Between Age and Gender")
+```
+
 ---
 ## Interaction Models: Age and Gender: SLON3 
  - Highest R-squared value of the interaction models. 
  
+  <$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 Male + \hat{\beta}_2 Age + \hat{\beta}_3 Maried/Cohabiting + \hat{\beta}_4 Single +\hat{\beta}_5 Life as Usual + \hat{\beta}_6 Life with Minor Changes + \hat{\beta}_7 Not Employed + \hat{\beta}_8 PartTime+ \hat{\beta}_9 Retired+ \hat{\beta}_a SelfEmployed+ \hat{\beta}_b 1Dependent+ \hat{\beta}_c 2Dependents+ \hat{\beta}_d 3Dependents+ \hat{\beta}_e 4Dependents + \hat{\beta}_e MoreThan4Dependents + \hat{\beta}_1 Male*\hat{\beta}_2 Age$>
 ```{r interaction-models7, echo=FALSE}
   SLON_age_gender_interaction <- linear_reg() %>%
   set_engine("lm") %>%
@@ -486,37 +506,38 @@ knitr::kable(adjustedR2table,digits=10,caption="Interaction Models: Adjusted R^2
   SLON_age_gender_R2 <- glance(SLON_age_gender_interaction)$adj.r.squared 
 ```
 
-```{r PSS-interaction-tables, echo= FALSE}
-# PSS_interaction_table <- matrix(c(3.2849, -0.6019, -0.0148, -0.0498, 0.0613, -0.0898, -0.2354, 0.2086, 0.1204, -0.0100, 0.0768, 0.1167, 0.0685, 0.0697, 0.0797, 0.0823, 0.0799, 0.0105),
-#   ncol=1, byrow=TRUE)
-# colnames(PSS_interaction_table) <- c('Estimate')
-# rownames(PSS_interaction_table) <- c('Intercept', 'Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2',  'Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+', 'Dem_gender: Male * Dem_age')
-# PSS_interaction_table <- as.table(PSS_interaction_table)
-# knitr::kable(PSS_interaction_table,digits=10,caption="Interaction Effect Models: Estimates for PSS: Overall Interaction Effect Between Age and Gender") 
+```{r SLON-interaction-tables, echo= FALSE, fig.alt = "Table showing coefficients for SLON interaction model of age and gender."}
+SLON_interaction_table <- matrix(c(3.5392, -0.4490, -0.0120, -0.3366, -0.1032, -0.6005, -0.4000, 0.1587, 0.0130, 0.0347, -0.0719, 0.0097, 0.0311, -0.0026, -0.0200, -0.0695, -0.0005, 0.0067), 
+  ncol=1, byrow=TRUE)
+colnames(SLON_interaction_table ) <- c('Estimate')
+rownames(SLON_interaction_table ) <- c('Intercept','Dem_gender: Male', 'Dem_age', 'Dem_maritalstatus: Married/cohabiting', 'Dem_maritalstatus: Single', 'Dem_isolation: Life carries on as usual', 'Dem_isolation: Life carries on with minor changes', 'Dem_employment: Not employed', 'Dem_employment: Part time employed', 'Dem_employment: Retired', 'Dem_employment: Self-employed', 'Dem_employment: Student', 'Dem_dependentsgrouped: 1', 'Dem_dependentsgrouped: 2','Dem_dependentsgrouped: 3', 'Dem_dependentsgrouped: 4', 'Dem_dependentsgrouped: 4+', 'Dem_gender: Male * Dem_age')
+SLON_interaction_table <- as.table(SLON_interaction_table )
+knitr::kable(SLON_interaction_table,digits=10,caption="Interaction Effect Models: Estimates for SLON: Overall Interaction Effect Between Age and Gender") 
 ```
+
 ---
 
 ## Interaction Models:Residuals PSS10
 
-```{r residualplot-PSSagegender, echo=FALSE} 
-# PSS_age_gender_interaction_aug <- augment(PSS_age_gender_interaction$fit)
-# 
-# graph10 <- ggplot(PSS_age_gender_interaction_aug, mapping = aes(x = .fitted, y = .resid)) + 
-# geom_point(alpha = 0.5)+
-# geom_hline(yintercept=0, color = "blue")+
-# labs(title = "Residual Plot of Interaction of PSS in Age and Gender", 
-#      x = "Fitted", 
-#      y = "Residual") 
+```{r residualplot-PSSagegender, echo=FALSE, fig.alt = "Residual plot showing the residuals from PSS 10 age and gender interaction model. "} 
+PSS_age_gender_interaction_aug <- augment(PSS_age_gender_interaction$fit)
+
+ggplot(PSS_age_gender_interaction_aug, mapping = aes(x = .fitted, y = .resid)) +
+geom_point(alpha = 0.5)+
+geom_hline(yintercept=0, color = "blue")+
+labs(title = "Residual Plot of Interaction of PSS in Age and Gender",
+     x = "Fitted",
+     y = "Residual")
 ```
 ---
-## Interaction Models:Residuals PSS10
-```{r residualplot-SLONagegender, echo=FALSE}
-# SLON_age_gender_interaction_aug <- augment(SLON_age_gender_interaction$fit)
-# 
-# graph11 <- ggplot(SLON_age_gender_interaction_aug, mapping = aes(x = .fitted, y = .resid)) + 
-# geom_point(alpha = 0.5)+
-# geom_hline(yintercept=0, color = "blue")+
-# labs(title = "Residual Plot of Interaction of SLON in Age and Gender", 
-#      x = "Fitted", 
-#      y = "Residual") 
+## Interaction Models:Residuals SLON3
+```{r residualplot-SLONagegender, echo=FALSE, fig.alt = "Residual plot showing the residuals from SLON3 age and gender interaction model. "}
+SLON_age_gender_interaction_aug <- augment(SLON_age_gender_interaction$fit)
+
+ggplot(SLON_age_gender_interaction_aug, mapping = aes(x = .fitted, y = .resid)) +
+geom_point(alpha = 0.5)+
+geom_hline(yintercept=0, color = "blue")+
+labs(title = "Residual Plot of Interaction of SLON in Age and Gender",
+     x = "Fitted",
+     y = "Residual")
 ```
